@@ -25,6 +25,36 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class CircleRenameMe extends StatelessWidget {
+  const CircleRenameMe(
+      {super.key, required this.days, required this.message, this.color});
+
+  final int days;
+  final String message;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150,
+      height: 150,
+      alignment: Alignment.center,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "${days} Days",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(message)
+          ]),
+      decoration:
+          BoxDecoration(shape: BoxShape.circle, color: color ?? Colors.grey),
+    );
+  }
+}
+
 class MyAppState extends ChangeNotifier {
   var current = WordPair.random();
 
@@ -43,14 +73,16 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          Text('A random awesome idea:'),
-          BigCard(days: 30, message: "Sober Days"),
-          BigCard(days: 10, message: "Days To Party"),
+          CircleRenameMe(
+              days: 10,
+              message: "Until Party",
+              color: Color.fromARGB(255, 255, 223, 245)),
+          CircleRenameMe(days: 10, message: "Sober", color: Color(0xFFe0f2f1)),
           ElevatedButton(
             onPressed: () {
               appState.getNext();
             },
-            child: Text('Next'),
+            child: Text('I WANT METH'),
           ),
         ],
       ),

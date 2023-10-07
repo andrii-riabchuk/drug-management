@@ -1,9 +1,133 @@
+import 'dart:developer';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
+// void main() {
+//   runApp(MaterialApp(
+//     initialRoute: '/',
+//     routes: <String, WidgetBuilder>{
+//       '/': (context) => const MyIntroPage(),
+//       '/app': (context) => MyApp()
+//     },
+//   ));
+// }
+
+void main() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  log("here should be sharedpreferences");
+  log(prefs.getBool('isfirstRun').toString());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Flutter Launch Detection Demo',
+    //if true return intro screen for first time Else go to login Screen
+    initialRoute: "/app",
+    routes: {
+      '/': (context) => const MyIntroPage(),
+      '/app': (context) => const MyApp()
+    },
+  ));
+}
+
+//------------------------------
+class MySharedPreferences {
+  MySharedPreferences._privateConstructor();
+
+  static final MySharedPreferences instance =
+      MySharedPreferences._privateConstructor();
+
+  setBooleanValue(String key, bool value) async {
+    SharedPreferences myPrefs = await SharedPreferences.getInstance();
+    myPrefs.setBool(key, value);
+  }
+
+  Future<bool> getBooleanValue(String key) async {
+    SharedPreferences myPrefs = await SharedPreferences.getInstance();
+    return myPrefs.getBool(key) ?? false;
+  }
+}
+
+class SharedPref extends StatefulWidget {
+  const SharedPref({super.key});
+
+  @override
+  _SharedPrefState createState() => _SharedPrefState();
+}
+
+class _SharedPrefState extends State<SharedPref> {
+  bool isFirstLaunch = true;
+
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flutter Launch Detection Demo',
+      //if true return intro screen for first time Else go to login Screen
+      initialRoute: "/app",
+      routes: {
+        '/': (context) => const MyIntroPage(),
+        '/app': (context) => const MyApp()
+      },
+    );
+  }
+}
+
+class MyIntroPage extends StatefulWidget {
+  const MyIntroPage({super.key});
+
+  @override
+  _MyIntroPageState createState() => _MyIntroPageState();
+}
+
+class _MyIntroPageState extends State<MyIntroPage> {
+  DateTime selectedDate = DateTime.now();
+
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Flutteriatko"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            GestureDetector(
+                onTap: () => {_selectDate(context)},
+                child: Text("${selectedDate.toLocal()}".split(' ')[0])),
+            SizedBox(
+              height: 20.0,
+            ),
+            // ElevatedButton(
+            //   onPressed: () => _selectDate(context),
+            //   child: Text('Select date'),
+            // ),
+            ElevatedButton(
+              onPressed: () => {
+                MySharedPreferences.instance
+                    .setBooleanValue("setupCompleted", true),
+                Navigator.pushNamed(context, '/app')
+              },
+              child: Text('Let\'s go'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -11,6 +135,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void doShit(bool setupCompleted) {
+      if (!setupCompleted) {
+        Navigator.pushNamed(context, '/');
+      }
+    }
+
+    MySharedPreferences.instance.getBooleanValue("setupCompleted").then(doShit);
+
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
@@ -71,22 +203,24 @@ class MyHomePage extends StatelessWidget {
     var pair = appState.current;
 
     return Scaffold(
-      body: Column(
-        children: [
-          CircleRenameMe(
-              days: 10,
-              message: "Until Party",
-              color: Color.fromARGB(255, 255, 223, 245)),
-          CircleRenameMe(days: 10, message: "Sober", color: Color(0xFFe0f2f1)),
-          ElevatedButton(
-            onPressed: () {
-              appState.getNext();
-            },
-            child: Text('I WANT METH'),
-          ),
-        ],
-      ),
-    );
+        body: Padding(
+            padding: EdgeInsets.all(30.0),
+            child: Column(
+              children: [
+                CircleRenameMe(
+                    days: 10,
+                    message: "Until Party",
+                    color: Color.fromARGB(255, 255, 223, 245)),
+                CircleRenameMe(
+                    days: 10, message: "Sober", color: Color(0xFFe0f2f1)),
+                ElevatedButton(
+                  onPressed: () {
+                    appState.getNext();
+                  },
+                  child: Text('I WANT METH'),
+                ),
+              ],
+            )));
   }
 }
 

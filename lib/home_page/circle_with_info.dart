@@ -4,18 +4,47 @@ class CircleWithInfo extends StatelessWidget {
   const CircleWithInfo(
       {super.key,
       required this.days,
-      required this.message,
-      required this.color});
+      required this.label,
+      required this.color,
+      required this.descriptionTitle,
+      required this.description});
 
   final int days;
-  final String message;
+  final String label;
+  final String descriptionTitle;
+  final String description;
   final Color color;
+
+  void showInfo(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(descriptionTitle),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  Text(description),
+                ],
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                child: Text('Вкурив'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      CircleRenameMe(days: days, message: message, color: color),
-      IconButton(onPressed: () {}, icon: Icon(Icons.info))
+      CircleRenameMe(days: days, message: label, color: color),
+      IconButton(onPressed: () => showInfo(context), icon: Icon(Icons.info))
     ]);
   }
 }

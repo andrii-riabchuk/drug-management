@@ -4,15 +4,14 @@ import 'package:drug_management/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.sp});
-  
+
   final SharedPreferences sp;
 
   @override
   Widget build(BuildContext context) {
-
+  
     void func(bool isSetupCompleted) {
       if (!isSetupCompleted) {
         Navigator.pop(context);
@@ -50,14 +49,18 @@ class MyHomePage extends StatelessWidget {
                         child: Column(children: [
                       CircleWithInfo(
                         days: daysUntilParty,
-                        message: "Until Party",
+                        label: "Until Party",
                         color: Color.fromARGB(255, 255, 223, 245),
+                        descriptionTitle: "Why wait",
+                        description: "Because high would be fucking amazing",
                       ),
                       CircleWithInfo(
                           days: daysSober,
-                          message: "Sober",
-                          color: Color(0xFFe0f2f1)),
-                      
+                        label: "Sober",
+                        color: Color(0xFFe0f2f1),
+                        descriptionTitle: "Why shouldn't give up",
+                        description: "Because you stay loser",
+                      ),
                       IWantMeph(sp: sp)
                     ]))
                   ]),

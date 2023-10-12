@@ -9,22 +9,36 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   // prefs.clear();
-  
-  runApp(MaterialApp(
-    // debugShowCheckedModeBanner: false,
-    title: 'DrugManagement',
-    // theme: ThemeData(
-    //   useMaterial3: true,
-    //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-    // ),
-    initialRoute: "/",
-    // home: MyHomePage()
-    routes: {
-      '/': (context) => ChangeNotifierProvider(
-          create: (context) =>
-              MyAppState(current: prefs.getInt("wantMeph") ?? 0),
-          child: MyHomePage(sp: prefs)),
-      '/setup': (context) => const MyIntroPage()
-    },
-  ));
+
+  runApp(MyApp(prefs: prefs));
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({
+    super.key,
+    required this.prefs,
+  });
+
+  final SharedPreferences prefs;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      // debugShowCheckedModeBanner: false,
+      title: 'DrugManagement',
+      // theme: ThemeData(
+      //   useMaterial3: true,
+      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+      // ),
+      initialRoute: "/",
+      // home: MyHomePage()
+      routes: {
+        '/': (context) => ChangeNotifierProvider(
+            create: (context) =>
+                MyAppState(current: prefs.getInt("wantMeph") ?? 0),
+            child: MyHomePage(sp: prefs)),
+        '/setup': (context) => const MyIntroPage()
+      },
+    );
+  }
 }

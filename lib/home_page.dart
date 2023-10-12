@@ -1,8 +1,12 @@
-import 'package:drug_management/home_page/circle_with_info.dart';
+import 'dart:math';
+
+import 'package:drug_management/home_page/beautiful_circle_box.dart';
 import 'package:drug_management/iwant_meph.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'info_button/info_button_wrapper.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.sp});
@@ -11,7 +15,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
     void func(bool isSetupCompleted) {
       if (!isSetupCompleted) {
         Navigator.pop(context);
@@ -28,6 +31,7 @@ class MyHomePage extends StatelessWidget {
         .add(const Duration(days: 90))
         .difference(DateTime.now())
         .inDays;
+    daysUntilParty = max(daysUntilParty, 0);
 
     return Scaffold(
         body: Padding(
@@ -47,21 +51,28 @@ class MyHomePage extends StatelessWidget {
                                 fontSize: 17, fontWeight: FontWeight.bold))),
                     Container(
                         child: Column(children: [
-                      CircleWithInfo(
-                        days: daysUntilParty,
-                        label: "Until Party",
-                        color: Color.fromARGB(255, 255, 223, 245),
-                        descriptionTitle: "Why wait",
-                        description: "Because high would be fucking amazing",
-                      ),
-                      CircleWithInfo(
-                          days: daysSober,
-                        label: "Sober",
-                        color: Color(0xFFe0f2f1),
-                        descriptionTitle: "Why shouldn't give up",
-                        description: "Because you stay loser",
-                      ),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+                          child: Column(children: [
+                            WithInfoButton(
+                                dialogSettings: const InfoDialogSettings(
+                                    title: "Why wait",
+                                    message:
+                                        "Because high would be fucking amazing"),
+                                child: BeautifulCircleBox(
+                                    color: Color.fromARGB(255, 255, 223, 245),
+                                    child: Counter(
+                                        daysUntilParty, "Until Party"))),
+                            WithInfoButton(
+                                dialogSettings: const InfoDialogSettings(
+                                    title: "Why shouldn't give up",
+                                    message: "Because you stay loser"),
+                                child: BeautifulCircleBox(
+                                    color: Color(0xFFe0f2f1),
+                                    child: Counter(daysSober, "Sober")))
+                          ])),
                       IWantMeph(sp: sp)
+
                     ]))
                   ]),
             )));

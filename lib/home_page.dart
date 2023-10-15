@@ -45,10 +45,15 @@ class MyHomePage extends StatelessWidget {
                   children: [
                     Padding(
                         padding: EdgeInsets.only(bottom: 40),
-                        child: Text(
-                            "Last Use Date: ${sp.getString("lastUseDate") ?? "Not specified"}",
+                        child: Column(children: [
+                          Text("Last Use Date:",
                             style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold))),
+                                  fontSize: 16)),
+                          Text(
+                              "${sp.getString("lastUseDate") ?? "Not specified"}",
+                              style: const TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold))
+                        ])),
                     Container(
                         child: Column(children: [
                       Padding(
@@ -71,7 +76,10 @@ class MyHomePage extends StatelessWidget {
                                     color: Color(0xFFe0f2f1),
                                     child: Counter(daysSober, "Sober")))
                           ])),
-                      IWantMeph(sp: sp)
+                      IWantMeph(
+                        sp: sp,
+                        isAllowedToUse: daysUntilParty == 0,
+                      )
 
                     ]))
                   ]),

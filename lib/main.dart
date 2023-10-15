@@ -1,6 +1,7 @@
 import 'package:drug_management/home_page.dart';
 import 'package:drug_management/intro_page.dart';
 import 'package:drug_management/iwant_meph.dart';
+import 'package:drug_management/party.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
             create: (context) =>
                 MyAppState(current: prefs.getInt("wantMeph") ?? 0),
             child: MyHomePage(sp: prefs)),
+        '/party': (context) => const PartyPage(),
         '/setup': (context) => const MyIntroPage()
       },
     );

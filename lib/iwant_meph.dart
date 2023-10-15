@@ -15,12 +15,10 @@ class MyAppState extends ChangeNotifier {
 }
 
 class IWantMeph extends StatelessWidget {
-  const IWantMeph({
-    super.key,
-    required this.sp,
-  });
+  const IWantMeph({super.key, required this.sp, required this.isAllowedToUse});
 
   final SharedPreferences sp;
+  final bool isAllowedToUse;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +29,9 @@ class IWantMeph extends StatelessWidget {
           onPressed: () {
             appState.wantMeph();
             sp.setInt("wantMeph", appState.current);
+            if (isAllowedToUse) {
+              Navigator.pushNamed(context, "/party");
+            }
           },
           child: Text('I WANT MEPH')),
       Text("Wanted already ${appState.current} times")

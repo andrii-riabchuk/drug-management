@@ -6,7 +6,8 @@ class PartyPage extends StatelessWidget {
   const PartyPage({super.key});
 
   void use(BuildContext context) {
-    var today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    var today =
+        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now().toUtc());
     MySharedPreferences.instance.setString("lastUseDate", today);
 
     Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);

@@ -4,34 +4,51 @@ import 'package:drug_management/home_page/beautiful_circle_box.dart';
 import 'package:drug_management/iwant_meph.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'info_button/info_button_wrapper.dart';
+
+extension Storage on SharedPreferences {
+  bool getBoolIfExist(String key) {
+    return getBool(key) ?? false;
+  }
+}
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.sp});
 
   final SharedPreferences sp;
 
+  int daysBetween(DateTime from, DateTime to) {
+    from = DateTime(from.year, from.month, from.day);
+    to = DateTime(to.year, to.month, to.day);
+    var diff = (to.difference(from).inHours / 24).round();
+    return max(diff, 0);
+  }
+
   @override
   Widget build(BuildContext context) {
-    void func(bool isSetupCompleted) {
-      if (!isSetupCompleted) {
-        Navigator.pop(context);
-        Navigator.pushNamed(context, "/setup");
-      }
+    redirectToSetup() {
+      Navigator.pop(context);
+      Navigator.pushNamed(context, "/setup");
     }
 
-    MySharedPreferences.instance.getBooleanValue('isSetupCompleted').then(func);
-    String lastUseDateFromStorage = sp.getString("lastUseDate") ?? "2023-10-05";
-    DateTime lastUseDate = DateTime.parse(lastUseDateFromStorage);
+    bool isSetupCompleted = sp.getBoolIfExist("isSetupCompleted");
+    String? lastUseDateString = sp.getString("lastUseDate");
+    if (!isSetupCompleted || lastUseDateString == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => redirectToSetup());
+      return Scaffold();
+    }
 
-    int daysSober = DateTime.now().difference(lastUseDate).inDays;
-    int daysUntilParty = lastUseDate
-        .add(const Duration(days: 90))
-        .difference(DateTime.now())
-        .inDays;
-    daysUntilParty = max(daysUntilParty, 0);
+    final TODAY = DateTime.now();
+    var dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+
+    DateTime lastUseDate = dateFormat.parse(lastUseDateString, true).toLocal();
+    DateTime partyDate = lastUseDate.add(const Duration(days: 3));
+
+    int daysSober = daysBetween(lastUseDate, TODAY);
+    int daysUntilParty = daysBetween(TODAY, partyDate);
 
     return Scaffold(
         body: Padding(
@@ -47,12 +64,15 @@ class MyHomePage extends StatelessWidget {
                         padding: EdgeInsets.only(bottom: 40),
                         child: Column(children: [
                           Text("Last Use Date:",
-                            style: const TextStyle(
-                                  fontSize: 16)),
-                          Text(
-                              "${sp.getString("lastUseDate") ?? "Not specified"}",
+                              style: const TextStyle(fontSize: 16)),
+                          Text("${lastUseDate.toLocal()}",
                               style: const TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.bold))
+                                  fontSize: 15, fontWeight: FontWeight.bold)),
+                          Text("Party Date:",
+                              style: const TextStyle(fontSize: 16)),
+                          Text("${partyDate.toLocal()}",
+                              style: const TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold))
                         ])),
                     Container(
                         child: Column(children: [
@@ -80,7 +100,6 @@ class MyHomePage extends StatelessWidget {
                         sp: sp,
                         isAllowedToUse: daysUntilParty == 0,
                       )
-
                     ]))
                   ]),
             )));

@@ -33,7 +33,8 @@ class _MyIntroPageState extends State<MyIntroPage> {
     void onSetupCompleted() {
       log("onSetupCompleted");
       MySharedPreferences.instance.setString(
-          "lastUseDate", DateFormat('yyyy-MM-dd').format(selectedDate));
+          "lastUseDate",
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc()));
       MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
       Navigator.pop(context);
       Navigator.pushNamed(context, "/");

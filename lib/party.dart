@@ -5,6 +5,13 @@ import 'package:intl/intl.dart';
 class PartyPage extends StatelessWidget {
   const PartyPage({super.key});
 
+  void use(BuildContext context) {
+    var today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    MySharedPreferences.instance.setString("lastUseDate", today);
+
+    Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,21 +37,14 @@ class PartyPage extends StatelessWidget {
                       Padding(
                           padding: EdgeInsets.all(10),
                           child: ElevatedButton(
-                            onPressed: () {
-                              MySharedPreferences.instance.setString(
-                                  "lastUseDate",
-                                  DateFormat('yyyy-MM-dd')
-                                      .format(DateTime.now()));
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, "/", (route) => false);
-                            },
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.all(10))),
+                            onPressed: () => use(context),
                             child: Text(
                               'USEEE',
                               style: TextStyle(fontSize: 20),
                             ),
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
-                                    EdgeInsets.all(10))),
                           ))
                     ]))));
   }

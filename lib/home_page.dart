@@ -1,31 +1,16 @@
-import 'dart:math';
-
 import 'package:drug_management/home_page/beautiful_circle_box.dart';
 import 'package:drug_management/iwant_meph.dart';
 import 'package:drug_management/shared_pref.dart';
+import 'package:drug_management/utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'info_button/info_button_wrapper.dart';
-
-extension Storage on SharedPreferences {
-  bool getBoolIfExist(String key) {
-    return getBool(key) ?? false;
-  }
-}
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.sp});
 
   final SharedPreferences sp;
-
-  int daysBetween(DateTime from, DateTime to) {
-    from = DateTime(from.year, from.month, from.day);
-    to = DateTime(to.year, to.month, to.day);
-    var diff = (to.difference(from).inHours / 24).round();
-    return max(diff, 0);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +27,12 @@ class MyHomePage extends StatelessWidget {
     }
 
     final TODAY = DateTime.now();
-    var dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
-    DateTime lastUseDate = dateFormat.parse(lastUseDateString, true).toLocal();
-    DateTime partyDate = lastUseDate.add(const Duration(days: 3));
+    DateTime lastUseDate = DateTimeUtils.parseUtcFormatted(lastUseDateString);
+    DateTime partyDate = lastUseDate.plus(days: 3);
 
-    int daysSober = daysBetween(lastUseDate, TODAY);
-    int daysUntilParty = daysBetween(TODAY, partyDate);
+    int daysSober = DateTimeUtils.daysBetween(lastUseDate, TODAY);
+    int daysUntilParty = DateTimeUtils.daysBetween(TODAY, partyDate);
 
     return Scaffold(
         body: Padding(

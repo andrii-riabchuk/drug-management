@@ -22,3 +22,9 @@ class MySharedPreferences {
     return myPrefs.getBool(key) ?? false;
   }
 }
+
+extension Storage on SharedPreferences {
+  bool getBoolIfExist(String key) {
+    return getBool(key) ?? false;
+  }
+}

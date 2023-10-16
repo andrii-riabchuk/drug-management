@@ -1,14 +1,16 @@
 import 'package:drug_management/shared_pref.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:drug_management/utils/date_time_utils.dart';
+import 'package:drug_management/constants/constants.dart' as constants;
 
 class PartyPage extends StatelessWidget {
   const PartyPage({super.key});
 
-  void use(BuildContext context) {
-    var today =
-        DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now().toUtc());
-    MySharedPreferences.instance.setString("lastUseDate", today);
+  void recordUsage(BuildContext context) {
+    var storageKey = constants.StorageKeys.lastUseDate;
+    var now = DateTimeUtils.utcNowFormatted();
+
+    MySharedPreferences.instance.setString(storageKey, now);
 
     Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
   }
@@ -41,7 +43,7 @@ class PartyPage extends StatelessWidget {
                             style: ButtonStyle(
                                 padding: MaterialStateProperty.all<EdgeInsets>(
                                     EdgeInsets.all(10))),
-                            onPressed: () => use(context),
+                            onPressed: () => recordUsage(context),
                             child: Text(
                               'USEEE',
                               style: TextStyle(fontSize: 20),

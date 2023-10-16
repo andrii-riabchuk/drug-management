@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:drug_management/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +29,6 @@ class _MyIntroPageState extends State<MyIntroPage> {
   @override
   Widget build(BuildContext context) {
     void onSetupCompleted() {
-      log("onSetupCompleted");
       MySharedPreferences.instance.setString(
           "lastUseDate",
           DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc()));
@@ -42,7 +39,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Flutteriatko"),
+        title: Text("Stay safe"),
         automaticallyImplyLeading: false,
       ),
       body: Center(
@@ -55,10 +52,6 @@ class _MyIntroPageState extends State<MyIntroPage> {
             SizedBox(
               height: 20.0,
             ),
-            // ElevatedButton(
-            //   onPressed: () => _selectDate(context),
-            //   child: Text('Select date'),
-            // ),
             ElevatedButton(
               onPressed: () => onSetupCompleted(),
               child: Text('Let\'s go'),

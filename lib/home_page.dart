@@ -2,6 +2,7 @@ import 'package:drug_management/home_page/beautiful_circle_box.dart';
 import 'package:drug_management/iwant_meph.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
+import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,15 +15,12 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    redirectToSetup() {
-      Navigator.pop(context);
-      Navigator.pushNamed(context, "/setup");
-    }
 
     bool isSetupCompleted = sp.getBoolIfExist("isSetupCompleted");
     String? lastUseDateString = sp.getString("lastUseDate");
     if (!isSetupCompleted || lastUseDateString == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => redirectToSetup());
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => context.redirectToSetup());
       return Scaffold();
     }
 

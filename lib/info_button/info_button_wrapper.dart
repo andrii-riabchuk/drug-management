@@ -1,3 +1,4 @@
+import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 
 class InfoDialogSettings {
@@ -39,7 +40,7 @@ class WithInfoButton extends StatelessWidget {
               ElevatedButton(
                 child: Text('Вкурив'),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  context.pop();
                 },
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:drug_management/shared_pref.dart';
+import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
 import 'package:drug_management/constants/constants.dart' as constants;
@@ -12,7 +13,7 @@ class PartyPage extends StatelessWidget {
 
     MySharedPreferences.instance.setString(storageKey, now);
 
-    Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
+    context.addNewPage("/", removeOther: true);
   }
 
   @override

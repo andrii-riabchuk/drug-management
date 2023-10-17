@@ -1,3 +1,4 @@
+import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +31,7 @@ class IWantMeph extends StatelessWidget {
             appState.wantMeph();
             sp.setInt("wantMeph", appState.current);
             if (isAllowedToUse) {
-              Navigator.pushNamed(context, "/party");
+              context.addNewPage("/party");
             }
           },
           child: Text('I WANT MEPH')),

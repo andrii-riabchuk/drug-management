@@ -1,4 +1,5 @@
 import 'package:drug_management/shared_pref.dart';
+import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -29,12 +30,10 @@ class _MyIntroPageState extends State<MyIntroPage> {
   @override
   Widget build(BuildContext context) {
     void onSetupCompleted() {
-      MySharedPreferences.instance.setString(
-          "lastUseDate",
+      MySharedPreferences.instance.setString("lastUseDate",
           DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc()));
       MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
-      Navigator.pop(context);
-      Navigator.pushNamed(context, "/");
+      context.redirectTo("/");
     }
 
     return Scaffold(

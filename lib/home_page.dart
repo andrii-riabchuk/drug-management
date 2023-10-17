@@ -1,3 +1,4 @@
+import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/home_page/beautiful_circle_box.dart';
 import 'package:drug_management/iwant_meph.dart';
 import 'package:drug_management/shared_pref.dart';
@@ -20,7 +21,7 @@ class MyHomePage extends StatelessWidget {
     String? lastUseDateString = sp.getString("lastUseDate");
     if (!isSetupCompleted || lastUseDateString == null) {
       WidgetsBinding.instance
-          .addPostFrameCallback((_) => context.redirectToSetup());
+          .addPostFrameCallback((_) => context.redirectTo(Routes.setup));
       return Scaffold();
     }
 

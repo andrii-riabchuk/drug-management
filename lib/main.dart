@@ -1,3 +1,4 @@
+import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/home_page.dart';
 import 'package:drug_management/intro_page.dart';
 import 'package:drug_management/iwant_meph.dart';
@@ -31,15 +32,15 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       // ),
-      initialRoute: "/",
+      initialRoute: Routes.home,
       // home: MyHomePage()
       routes: {
-        '/': (context) => ChangeNotifierProvider(
+        Routes.home: (context) => ChangeNotifierProvider(
             create: (context) =>
                 MyAppState(current: prefs.getInt("wantMeph") ?? 0),
             child: MyHomePage(sp: prefs)),
-        '/party': (context) => const PartyPage(),
-        '/setup': (context) => const MyIntroPage()
+        Routes.party: (context) => const PartyPage(),
+        Routes.setup: (context) => const MyIntroPage()
       },
     );
   }

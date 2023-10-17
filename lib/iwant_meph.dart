@@ -1,3 +1,4 @@
+import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MyAppState extends ChangeNotifier {
   MyAppState({required this.current});
 
-  int current;
+  int current = 0;
 
   void wantMeph() {
     current = current + 1;
@@ -31,7 +32,7 @@ class IWantMeph extends StatelessWidget {
             appState.wantMeph();
             sp.setInt("wantMeph", appState.current);
             if (isAllowedToUse) {
-              context.addNewPage("/party");
+              context.addNewPage(Routes.party);
             }
           },
           child: Text('I WANT MEPH')),

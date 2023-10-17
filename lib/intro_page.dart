@@ -1,3 +1,4 @@
+import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
       MySharedPreferences.instance.setString("lastUseDate",
           DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc()));
       MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
-      context.redirectTo("/");
+      context.redirectTo(Routes.home);
     }
 
     return Scaffold(

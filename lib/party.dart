@@ -1,19 +1,19 @@
+import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
-import 'package:drug_management/constants/constants.dart' as constants;
 
 class PartyPage extends StatelessWidget {
   const PartyPage({super.key});
 
   void recordUsage(BuildContext context) {
-    var storageKey = constants.StorageKeys.lastUseDate;
+    var storageKey = StorageKeys.lastUseDate;
     var now = DateTimeUtils.utcNowFormatted();
 
     MySharedPreferences.instance.setString(storageKey, now);
 
-    context.addNewPage("/", removeOther: true);
+    context.addNewPage(Routes.home, removeOther: true);
   }
 
   @override

@@ -6,10 +6,6 @@ extension NavigatorExtension on BuildContext {
     Navigator.pushNamed(this, route);
   }
 
-  redirectToSetup() {
-    redirectTo("/setup");
-  }
-
   addNewPage(route, {bool removeOther = false}) {
     if (removeOther) {
       Navigator.of(this).pushNamedAndRemoveUntil(route, (_) => false);

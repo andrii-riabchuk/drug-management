@@ -4,14 +4,10 @@ import 'package:intl/intl.dart';
 
 class DateTimeUtils {
   static const formatString = 'yyyy-MM-dd HH:mm:ss';
-
-  // Formatting
-  static String formatDateTime(DateTime dateTime) {
-    return DateFormat(formatString).format(dateTime);
-  }
+  static const shortFormat = "yyyy-MM-dd";
 
   static String utcNowFormatted() {
-    return formatDateTime(DateTime.now().toUtc());
+    return DateTime.now().toUtc().formatDateTime();
   }
 
   static DateTime parseUtcFormatted(String str) {
@@ -30,5 +26,19 @@ class DateTimeUtils {
 extension DateTimeExtension on DateTime {
   DateTime plus({int days = 0}) {
     return this.add(Duration(days: days));
+  }
+}
+
+extension DateTimeExtensions on DateTime {
+  String formatDateTime() {
+    return DateFormat(DateTimeUtils.formatString).format(this);
+  }
+
+  String formatDateTimeShort() {
+    return DateFormat(DateTimeUtils.shortFormat).format(this);
+  }
+
+  String formatDateWithWords() {
+    return DateFormat.yMMMd("en_US").format(this);
   }
 }

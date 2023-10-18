@@ -1,13 +1,13 @@
 import 'package:drug_management/constants/constants.dart';
-import 'package:drug_management/home_page/beautiful_circle_box.dart';
-import 'package:drug_management/iwant_meph.dart';
+import 'package:drug_management/pages/home_page/beautiful_circle_box.dart';
+import 'package:drug_management/pages/party/iwant_meph.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'info_button/info_button_wrapper.dart';
+import '../../info_button/info_button_wrapper.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key, required this.sp});
@@ -16,7 +16,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     bool isSetupCompleted = sp.getBoolIfExist("isSetupCompleted");
     String? lastUseDateString = sp.getString("lastUseDate");
     if (!isSetupCompleted || lastUseDateString == null) {
@@ -43,20 +42,7 @@ class MyHomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                        padding: EdgeInsets.only(bottom: 40),
-                        child: Column(children: [
-                          Text("Last Use Date:",
-                              style: const TextStyle(fontSize: 16)),
-                          Text("${lastUseDate.toLocal()}",
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold)),
-                          Text("Party Date:",
-                              style: const TextStyle(fontSize: 16)),
-                          Text("${partyDate.toLocal()}",
-                              style: const TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold))
-                        ])),
+                    DateInfo(lastUseDate, partyDate),
                     Container(
                         child: Column(children: [
                       Padding(
@@ -65,8 +51,7 @@ class MyHomePage extends StatelessWidget {
                             WithInfoButton(
                                 dialogSettings: const InfoDialogSettings(
                                     title: "Why wait",
-                                    message:
-                                        "Because high would be fucking amazing"),
+                                    message: Messages.whyWait),
                                 child: BeautifulCircleBox(
                                     color: Color.fromARGB(255, 255, 223, 245),
                                     child: Counter(
@@ -74,7 +59,7 @@ class MyHomePage extends StatelessWidget {
                             WithInfoButton(
                                 dialogSettings: const InfoDialogSettings(
                                     title: "Why shouldn't give up",
-                                    message: "Because you stay loser"),
+                                    message: Messages.whyStay),
                                 child: BeautifulCircleBox(
                                     color: Color(0xFFe0f2f1),
                                     child: Counter(daysSober, "Sober")))
@@ -86,5 +71,35 @@ class MyHomePage extends StatelessWidget {
                     ]))
                   ]),
             )));
+  }
+}
+
+class DateInfo extends StatelessWidget {
+  const DateInfo(this.lastUseDate, this.partyDate, {super.key});
+
+  final DateTime lastUseDate;
+  final DateTime partyDate;
+
+  @override
+  Widget build(BuildContext context) {
+    var lastUseDateFormatted = lastUseDate.toLocal().formatDateWithWords();
+    var partyDateFormatted = partyDate.toLocal().formatDateWithWords();
+
+    var labelStyle = const TextStyle(fontSize: 16);
+    var dateStyle = const TextStyle(fontSize: 15, fontWeight: FontWeight.bold);
+
+    return Center(
+        child: Padding(
+            padding: EdgeInsets.only(bottom: 40),
+            child: Column(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text("Last use Date: ", style: labelStyle),
+                Text(lastUseDateFormatted, style: dateStyle)
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text("Party Date: ", style: labelStyle),
+                Text(partyDateFormatted, style: dateStyle)
+              ])
+            ])));
   }
 }

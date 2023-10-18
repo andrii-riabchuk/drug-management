@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'dart:developer' as developer;
+
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +12,7 @@ class MyAppState extends ChangeNotifier {
   MyAppState({required this.current});
 
   int current = 0;
+  Timer? timer;
 
   void wantMeph() {
     current = current + 1;
@@ -27,15 +32,25 @@ class IWantMeph extends StatelessWidget {
     var appState = context.watch<MyAppState>(); // ← 2
 
     return Column(children: [
-      ElevatedButton(
-          onPressed: () {
-            appState.wantMeph();
-            sp.setInt("wantMeph", appState.current);
-            if (isAllowedToUse) {
-              context.addNewPage(Routes.party);
-            }
+      GestureDetector(
+          onPanDown: (details) {
+            appState.timer =
+                Timer.periodic(Duration(milliseconds: 2000), (timer) {
+              context.addNewPage(Routes.secret);
+            });
           },
-          child: Text('I WANT MEPH')),
+          onPanCancel: () {
+            appState.timer?.cancel();
+          },
+          child: ElevatedButton(
+              onPressed: () {
+                appState.wantMeph();
+                sp.setInt("wantMeph", appState.current);
+                if (isAllowedToUse) {
+                  context.addNewPage(Routes.party);
+                }
+              },
+              child: Text('I WANT MEPH'))),
       Text("Wanted already ${appState.current} times")
     ]);
   }

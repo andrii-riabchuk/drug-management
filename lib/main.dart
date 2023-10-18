@@ -1,8 +1,9 @@
 import 'package:drug_management/constants/constants.dart';
-import 'package:drug_management/home_page.dart';
-import 'package:drug_management/intro_page.dart';
-import 'package:drug_management/iwant_meph.dart';
-import 'package:drug_management/party.dart';
+import 'package:drug_management/pages/home_page/home_page.dart';
+import 'package:drug_management/pages/intro_page/intro_page.dart';
+import 'package:drug_management/pages/party/iwant_meph.dart';
+import 'package:drug_management/pages/party/party.dart';
+import 'package:drug_management/pages/party/secret_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -35,12 +36,13 @@ class MyApp extends StatelessWidget {
       initialRoute: Routes.home,
       // home: MyHomePage()
       routes: {
+        Routes.setup: (context) => const MyIntroPage(),
         Routes.home: (context) => ChangeNotifierProvider(
             create: (context) =>
                 MyAppState(current: prefs.getInt("wantMeph") ?? 0),
             child: MyHomePage(sp: prefs)),
         Routes.party: (context) => const PartyPage(),
-        Routes.setup: (context) => const MyIntroPage()
+        Routes.secret: (context) => const SecretPage()
       },
     );
   }

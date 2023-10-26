@@ -1,4 +1,5 @@
 import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/pages/history_page/history_page.dart';
 import 'package:drug_management/pages/home_page/home_page.dart';
 import 'package:drug_management/pages/intro_page/intro_page.dart';
 import 'package:drug_management/pages/party/iwant_meph.dart';
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
                 MyAppState(current: prefs.getInt("wantMeph") ?? 0),
             child: MyHomePage(sp: prefs)),
         Routes.party: (context) => const PartyPage(),
-        Routes.secret: (context) => const SecretPage()
+        Routes.secret: (context) => const SecretPage(),
+        Routes.history: (context) => const HistoryPage()
       },
     );
   }

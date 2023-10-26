@@ -7,6 +7,7 @@ class Routes {
   static const String home = "/";
   static const String party = "/party";
   static const String secret = "/secret";
+  static const String history = "/history";
 }
 
 class Messages {

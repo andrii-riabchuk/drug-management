@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
             child: MyHomePage(sp: prefs)),
         Routes.party: (context) => const PartyPage(),
         Routes.secret: (context) => const SecretPage(),
-        Routes.history: (context) => const HistoryPage()
+        Routes.history: (context) => HistoryPage(sp: prefs)
       },
     );
   }

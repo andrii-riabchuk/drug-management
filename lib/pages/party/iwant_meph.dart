@@ -36,7 +36,7 @@ class IWantMeph extends StatelessWidget {
           onPanDown: (details) {
             appState.timer =
                 Timer.periodic(Duration(milliseconds: 2000), (timer) {
-              context.addNewPage(Routes.secret);
+              context.addNewPage(Routes.Secret);
             });
           },
           onPanCancel: () {
@@ -47,7 +47,7 @@ class IWantMeph extends StatelessWidget {
                 appState.wantMeph();
                 sp.setInt("wantMeph", appState.current);
                 if (isAllowedToUse) {
-                  context.addNewPage(Routes.party);
+                  context.addNewPage(Routes.Party);
                 }
               },
               child: Text('I WANT MEPH'))),

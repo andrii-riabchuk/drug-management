@@ -8,12 +8,12 @@ class PartyPage extends StatelessWidget {
   const PartyPage({super.key});
 
   void recordUsage(BuildContext context) {
-    var storageKey = StorageKeys.lastUseDate;
+    var storageKey = StorageKeys.LastUseDate;
     var now = DateTimeUtils.utcNowFormatted();
 
     MySharedPreferences.instance.setString(storageKey, now);
 
-    context.addNewPage(Routes.home, removeOther: true);
+    context.addNewPage(Routes.Home, removeOther: true);
   }
 
   @override

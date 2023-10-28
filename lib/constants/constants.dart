@@ -1,16 +1,19 @@
+// ignore_for_file: constant_identifier_names
+
 class StorageKeys {
-  static const String lastUseDate = "lastUseDate";
+  static const String LastUseDate = "lastUseDate";
+  static const String History = "history";
 }
 
 class Routes {
-  static const String setup = "/setup";
-  static const String home = "/";
-  static const String party = "/party";
-  static const String secret = "/secret";
-  static const String history = "/history";
+  static const String Setup = "/setup";
+  static const String Home = "/";
+  static const String Party = "/party";
+  static const String Secret = "/secret";
+  static const String History = "/history";
 }
 
 class Messages {
-  static const String whyWait = "Because high would be fucking amazing";
-  static const String whyStay = "Because you stay loser";
+  static const String WhyWait = "Because high would be fucking amazing";
+  static const String WhyStay = "Because you stay loser";
 }

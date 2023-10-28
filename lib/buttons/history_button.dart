@@ -10,7 +10,7 @@ class HistoryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        onPressed: () => {context.addNewPage(Routes.history)},
+        onPressed: () => {context.addNewPage(Routes.History)},
         icon: Icon(Icons.book));
   }
 }

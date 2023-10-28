@@ -34,17 +34,17 @@ class MyApp extends StatelessWidget {
       //   useMaterial3: true,
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       // ),
-      initialRoute: Routes.home,
+      initialRoute: Routes.Home,
       // home: MyHomePage()
       routes: {
-        Routes.setup: (context) => const MyIntroPage(),
-        Routes.home: (context) => ChangeNotifierProvider(
+        Routes.Setup: (context) => const MyIntroPage(),
+        Routes.Home: (context) => ChangeNotifierProvider(
             create: (context) =>
                 MyAppState(current: prefs.getInt("wantMeph") ?? 0),
             child: MyHomePage(sp: prefs)),
-        Routes.party: (context) => const PartyPage(),
-        Routes.secret: (context) => const SecretPage(),
-        Routes.history: (context) => HistoryPage(sp: prefs)
+        Routes.Party: (context) => const PartyPage(),
+        Routes.Secret: (context) => const SecretPage(),
+        Routes.History: (context) => HistoryPage(sp: prefs)
       },
     );
   }

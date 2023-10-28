@@ -1,29 +1,22 @@
+import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoryPage extends StatelessWidget {
-  const HistoryPage({super.key, required this.sp});
+  HistoryPage({super.key, required this.sp})
+      : historyService = HistoryService(sp: sp);
 
   final SharedPreferences sp;
+  final HistoryService historyService;
 
   @override
   Widget build(BuildContext context) {
     List<HistoryEntry> toShow = [];
 
-    var fromStorage = sp.getStringList("history");
-
-    //add mock data
-    if (fromStorage == null) {
-      var history = ["2023-09-14 | weed", "2023-08-29 | alcohol"];
-      sp.setStringList("history", history);
-      fromStorage = history;
-    }
-
-    if (fromStorage != null) {
-      fromStorage.forEach((record) {
-        toShow.add(HistoryEntry(record));
-      });
-    }
+    historyService.getRecords().forEach((record) {
+      toShow.add(HistoryEntry(record));
+    });
 
     return Scaffold(
       appBar: AppBar(title: const Text("History")),
@@ -35,7 +28,7 @@ class HistoryPage extends StatelessWidget {
 class HistoryEntry extends StatelessWidget {
   const HistoryEntry(this.record, {super.key});
 
-  final String record;
+  final Record record;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +37,8 @@ class HistoryEntry extends StatelessWidget {
           child: Container(
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-              child: Padding(padding: EdgeInsets.all(10), child: Text(record))))
+              child: Padding(
+                  padding: EdgeInsets.all(10), child: Text(record.record))))
     ]);
   }
 }

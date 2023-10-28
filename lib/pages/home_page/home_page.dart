@@ -24,7 +24,7 @@ class MyHomePage extends StatelessWidget {
     String? lastUseDateString = sp.getString("lastUseDate");
     if (!isSetupCompleted || lastUseDateString == null) {
       WidgetsBinding.instance
-          .addPostFrameCallback((_) => context.redirectTo(Routes.setup));
+          .addPostFrameCallback((_) => context.redirectTo(Routes.Setup));
       return Scaffold();
     }
 
@@ -77,7 +77,7 @@ class SoberBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return WithInfoButton(
         dialogSettings: const InfoDialogSettings(
-            title: "Why shouldn't give up", message: Messages.whyStay),
+            title: "Why shouldn't give up", message: Messages.WhyStay),
         child: BeautifulCircleBox(
             color: Color(0xFFe0f2f1), child: Counter(daysSober, "Sober")));
   }
@@ -95,7 +95,7 @@ class UntilPartyBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return WithInfoButton(
         dialogSettings: const InfoDialogSettings(
-            title: "Why wait", message: Messages.whyWait),
+            title: "Why wait", message: Messages.WhyWait),
         child: BeautifulCircleBox(
             color: Color.fromARGB(255, 255, 223, 245),
             child: Counter(daysUntilParty, "Until Party")));

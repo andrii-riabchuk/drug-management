@@ -34,7 +34,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
       MySharedPreferences.instance.setString("lastUseDate",
           DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc()));
       MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
-      context.redirectTo(Routes.home);
+      context.redirectTo(Routes.Home);
     }
 
     return Scaffold(

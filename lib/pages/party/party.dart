@@ -1,17 +1,39 @@
 import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PartyPage extends StatelessWidget {
+class PartyPage extends StatefulWidget {
   const PartyPage({super.key});
+
+  @override
+  State<PartyPage> createState() => _PartyPageState();
+}
+
+class _PartyPageState extends State<PartyPage> {
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
 
   void recordUsage(BuildContext context) {
     var storageKey = StorageKeys.LastUseDate;
     var now = DateTimeUtils.utcNowFormatted();
-
     MySharedPreferences.instance.setString(storageKey, now);
+
+    addToHistory(SharedPreferences sp) {
+      var historyService = HistoryService(sp: sp);
+      historyService.saveRecord(now, myController.text);
+    }
+
+    SharedPreferences.getInstance().then(addToHistory);
 
     context.addNewPage(Routes.Home, removeOther: true);
   }
@@ -29,13 +51,14 @@ class PartyPage extends StatelessWidget {
                     // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(
+                      SizedBox(
                           width: 300.0,
                           child: TextField(
+                              controller: myController,
                               decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'What will you use?',
-                          ))),
+                                border: OutlineInputBorder(),
+                                hintText: 'What will you use?',
+                              ))),
                       // Text(
                       //     "Glad to see that you handled the 90-day-sobriety challenge")
                       Padding(

@@ -28,4 +28,16 @@ class HistoryService {
 
     return result;
   }
+
+  saveRecord(String dateTime, String substance) {
+    sp.addStringList(StorageKeys.History, "$dateTime | $substance");
+  }
+}
+
+extension Abuse on SharedPreferences {
+  addStringList(String key, String str) {
+    var currentList = getStringList(key) ?? [];
+    currentList.add(str);
+    setStringList(key, currentList);
+  }
 }

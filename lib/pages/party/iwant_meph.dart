@@ -36,10 +36,14 @@ class IWantMeph extends StatelessWidget {
           onPanDown: (details) {
             appState.timer =
                 Timer.periodic(Duration(milliseconds: 2000), (timer) {
+              appState.timer?.cancel();
               context.addNewPage(Routes.Secret);
             });
           },
           onPanCancel: () {
+            appState.timer?.cancel();
+          },
+          onPanEnd: (e) {
             appState.timer?.cancel();
           },
           child: ElevatedButton(

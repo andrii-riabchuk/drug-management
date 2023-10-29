@@ -13,6 +13,14 @@ class MyIntroPage extends StatefulWidget {
 
 class _MyIntroPageState extends State<MyIntroPage> {
   DateTime selectedDate = DateTime.now();
+  final myController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    super.dispose();
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -37,6 +45,11 @@ class _MyIntroPageState extends State<MyIntroPage> {
       context.redirectTo(Routes.Home);
     }
 
+    void skip() {
+      MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
+      context.redirectTo(Routes.Home);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Stay safe"),
@@ -46,15 +59,49 @@ class _MyIntroPageState extends State<MyIntroPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            GestureDetector(
-                onTap: () => {_selectDate(context)},
-                child: Text("${selectedDate.toLocal()}".split(' ')[0])),
-            SizedBox(
-              height: 20.0,
+            Text(
+              "Last time used?",
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 30),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text("Date: "),
+              OutlinedButton(
+                  onPressed: () => {_selectDate(context)},
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                  ),
+                  child: Text(selectedDate.toLocal().toString().split(' ')[0]))
+            ]),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text("Substance: "),
+              SizedBox(
+                  height: 30,
+                  width: 100,
+                  child: TextField(
+                    controller: myController,
+                    decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+                      border: OutlineInputBorder(),
+                      hintText: '?',
+                    ),
+                    style: TextStyle(fontSize: 14),
+                  ))
+            ]),
+            SizedBox(height: 10),
             ElevatedButton(
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: Colors.blue[700]),
               onPressed: () => onSetupCompleted(),
               child: Text('Let\'s go'),
+            ),
+            SizedBox(height: 100),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.cyan),
+              onPressed: () => skip(),
+              child: Text('skip'),
             ),
           ],
         ),

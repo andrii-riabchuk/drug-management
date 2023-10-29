@@ -22,7 +22,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isSetupCompleted = sp.getBoolIfExist("isSetupCompleted");
     String? lastUseDateString = sp.getString("lastUseDate");
-    if (!isSetupCompleted || lastUseDateString == null) {
+    if (!isSetupCompleted) {
       WidgetsBinding.instance
           .addPostFrameCallback((_) => context.redirectTo(Routes.Setup));
       return Scaffold();
@@ -30,11 +30,17 @@ class MyHomePage extends StatelessWidget {
 
     final TODAY = DateTime.now();
 
-    DateTime lastUseDate = DateTimeUtils.parseUtcFormatted(lastUseDateString);
-    DateTime partyDate = lastUseDate.plus(days: PARTY_PERIOD);
+    DateTime? lastUseDate;
+    DateTime partyDate = DateTime.now();
+    int? daysSober;
+    int daysUntilParty;
 
-    int daysSober = DateTimeUtils.daysBetween(lastUseDate, TODAY);
-    int daysUntilParty = DateTimeUtils.daysBetween(TODAY, partyDate);
+    if (lastUseDateString != null) {
+      lastUseDate = DateTimeUtils.parseUtcFormatted(lastUseDateString);
+      partyDate = lastUseDate.plus(days: PARTY_PERIOD);
+      daysSober = DateTimeUtils.daysBetween(lastUseDate, TODAY);
+    }
+    daysUntilParty = DateTimeUtils.daysBetween(TODAY, partyDate);
 
     return Scaffold(
         body: Padding(
@@ -71,7 +77,7 @@ class SoberBox extends StatelessWidget {
     required this.daysSober,
   });
 
-  final int daysSober;
+  final int? daysSober;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +85,8 @@ class SoberBox extends StatelessWidget {
         dialogSettings: const InfoDialogSettings(
             title: "Why shouldn't give up", message: Messages.WhyStay),
         child: BeautifulCircleBox(
-            color: Color(0xFFe0f2f1), child: Counter(daysSober, "Sober")));
+            color: Color(0xFFe0f2f1),
+            child: Counter(daysSober ?? 999999, "Sober")));
   }
 }
 
@@ -105,12 +112,17 @@ class UntilPartyBox extends StatelessWidget {
 class DateInfo extends StatelessWidget {
   const DateInfo(this.lastUseDate, this.partyDate, {super.key});
 
-  final DateTime lastUseDate;
+  final DateTime? lastUseDate;
   final DateTime partyDate;
 
   @override
   Widget build(BuildContext context) {
-    var lastUseDateFormatted = lastUseDate.toLocal().formatDateWithWords();
+    var lastUseDateFormatted = "never";
+    if (lastUseDate != null) {
+      lastUseDateFormatted =
+          (lastUseDate ?? DateTime.now()).toLocal().formatDateWithWords();
+    }
+
     var partyDateFormatted = partyDate.toLocal().formatDateWithWords();
 
     var labelStyle = const TextStyle(fontSize: 16);

@@ -32,7 +32,7 @@ class Counter extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            "$days Days",
+            (days != 999999) ? "$days Days" : "Always",
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Text(message)

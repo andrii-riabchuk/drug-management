@@ -2,7 +2,8 @@ import 'package:drug_management/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Record {
-  Record(this.record);
+  Record(String dateTime, String substance) : record = "$dateTime | $substance";
+  Record.fromString(this.record);
 
   String record = "Missing_Info";
 }
@@ -24,13 +25,18 @@ class HistoryService {
       fromStorage = history;
     }
 
-    result = fromStorage.map((str) => Record(str)).toList();
+    result = fromStorage.map((str) => Record.fromString(str)).toList();
 
     return result;
   }
 
-  saveRecord(String dateTime, String substance) {
-    sp.addStringList(StorageKeys.History, "$dateTime | $substance");
+  saveRecord(Record record) {
+    sp.addStringList(StorageKeys.History, record.record);
+  }
+
+  static addToHistory(SharedPreferences sp, Record record) {
+    var historyService = HistoryService(sp: sp);
+    historyService.saveRecord(record);
   }
 }
 

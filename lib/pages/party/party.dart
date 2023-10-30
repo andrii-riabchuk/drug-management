@@ -28,12 +28,9 @@ class _PartyPageState extends State<PartyPage> {
     var now = DateTimeUtils.utcNowFormatted();
     MySharedPreferences.instance.setString(storageKey, now);
 
-    addToHistory(SharedPreferences sp) {
-      var historyService = HistoryService(sp: sp);
-      historyService.saveRecord(now, myController.text);
-    }
-
-    SharedPreferences.getInstance().then(addToHistory);
+    var record = Record(now, myController.text);
+    SharedPreferences.getInstance()
+        .then((sp) => HistoryService.addToHistory(sp, record));
 
     context.addNewPage(Routes.Home, removeOther: true);
   }

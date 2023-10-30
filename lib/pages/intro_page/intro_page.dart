@@ -1,8 +1,10 @@
 import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyIntroPage extends StatefulWidget {
   const MyIntroPage({super.key});
@@ -27,7 +29,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
         context: context,
         initialDate: selectedDate,
         firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
+        lastDate: DateTime.now());
 
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -39,9 +41,16 @@ class _MyIntroPageState extends State<MyIntroPage> {
   @override
   Widget build(BuildContext context) {
     void onSetupCompleted() {
-      MySharedPreferences.instance.setString("lastUseDate",
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc()));
+      var lastUseDate =
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc());
+
+      MySharedPreferences.instance.setString("lastUseDate", lastUseDate);
       MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
+
+      var record = Record(lastUseDate, myController.text);
+      SharedPreferences.getInstance()
+          .then((sp) => HistoryService.addToHistory(sp, record));
+
       context.redirectTo(Routes.Home);
     }
 

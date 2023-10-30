@@ -47,6 +47,8 @@ class IWantMeph extends StatelessWidget {
             appState.timer?.cancel();
           },
           child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 255, 0, 149)),
               onPressed: () {
                 appState.wantMeph();
                 sp.setInt("wantMeph", appState.current);

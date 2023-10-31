@@ -20,14 +20,15 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isSetupCompleted = sp.getBoolIfExist("isSetupCompleted");
-    String? lastUseDateString = sp.getString("lastUseDate");
+    bool isSetupCompleted = sp.getBoolIfExist(StorageKeys.IsSetupCompleted);
+    String? lastUseDateString = sp.getString(StorageKeys.LastUseDate);
     if (!isSetupCompleted) {
       WidgetsBinding.instance
           .addPostFrameCallback((_) => context.redirectTo(Routes.Setup));
       return Scaffold();
     }
 
+    // ignore: non_constant_identifier_names
     final TODAY = DateTime.now();
 
     DateTime? lastUseDate;
@@ -45,7 +46,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
         body: Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: Container(
+            child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: Column(
@@ -53,8 +54,7 @@ class MyHomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     DateInfo(lastUseDate, partyDate),
-                    Container(
-                        child: Column(children: [
+                    Column(children: [
                       Padding(
                           padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
                           child: Column(children: [
@@ -65,7 +65,7 @@ class MyHomePage extends StatelessWidget {
                         sp: sp,
                         isAllowedToUse: daysUntilParty == 0,
                       )
-                    ]))
+                    ])
                   ]),
             )));
   }

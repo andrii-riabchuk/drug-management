@@ -44,8 +44,10 @@ class _MyIntroPageState extends State<MyIntroPage> {
       var lastUseDate =
           DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc());
 
-      MySharedPreferences.instance.setString("lastUseDate", lastUseDate);
-      MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
+      MySharedPreferences.instance
+          .setString(StorageKeys.LastUseDate, lastUseDate);
+      MySharedPreferences.instance
+          .setBoolean(StorageKeys.IsSetupCompleted, true);
 
       var record = Record(lastUseDate, myController.text);
       SharedPreferences.getInstance()
@@ -55,7 +57,8 @@ class _MyIntroPageState extends State<MyIntroPage> {
     }
 
     void skip() {
-      MySharedPreferences.instance.setBoolean("isSetupCompleted", true);
+      MySharedPreferences.instance
+          .setBoolean(StorageKeys.IsSetupCompleted, true);
       context.redirectTo(Routes.Home);
     }
 

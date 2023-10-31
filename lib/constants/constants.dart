@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 class StorageKeys {
+  static const String IsSetupCompleted = "isSetupCompleted";
   static const String LastUseDate = "lastUseDate";
   static const String History = "history";
 }

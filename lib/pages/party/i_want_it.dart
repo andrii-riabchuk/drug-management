@@ -56,7 +56,7 @@ class IWantMeph extends StatelessWidget {
                   context.addNewPage(Routes.Party);
                 }
               },
-              child: Text('I WANT MEPH'))),
+              child: Text('I WANT IT'))),
       Text("Wanted already ${appState.current} times")
     ]);
   }

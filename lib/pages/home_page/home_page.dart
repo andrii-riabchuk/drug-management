@@ -1,7 +1,7 @@
 import 'package:drug_management/buttons/history_button.dart';
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/pages/home_page/beautiful_circle_box.dart';
-import 'package:drug_management/pages/party/iwant_meph.dart';
+import 'package:drug_management/pages/party/i_want_it.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
 import 'package:drug_management/utils/navigator_extension.dart';

@@ -2,7 +2,9 @@ import 'package:drug_management/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Record {
-  Record(String dateTime, String substance) : record = "$dateTime | $substance";
+  Record(String dateTime, String substance, {String? amount})
+      : record =
+            "$dateTime | $substance${amount != null ? " " + amount : null}";
   Record.fromString(this.record);
 
   String record = "Missing_Info";

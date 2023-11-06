@@ -2,7 +2,7 @@ import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/pages/history_page/history_page.dart';
 import 'package:drug_management/pages/home_page/home_page.dart';
 import 'package:drug_management/pages/intro_page/intro_page.dart';
-import 'package:drug_management/pages/party/iwant_meph.dart';
+import 'package:drug_management/pages/party/i_want_it.dart';
 import 'package:drug_management/pages/party/party.dart';
 import 'package:drug_management/pages/party/secret_page.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,5 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:drug_management/custom_widgets/text_input.dart';
+import 'package:drug_management/custom_widgets/unit_dropdown.dart';
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/shared_pref.dart';
@@ -18,12 +19,20 @@ class _PartyPageState extends State<PartyPage> {
   final substanceCtrl = TextEditingController();
   final amountCtrl = TextEditingController();
   final amountUnitCtrl = TextEditingController(text: possibleUnits.first);
-  String unit = "g";
+
+  String unit = possibleUnits.first;
+  updateUnitState(String val) {
+    setState(() {
+      unit = val;
+    });
+  }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     substanceCtrl.dispose();
+    amountCtrl.dispose();
+    amountUnitCtrl.dispose();
     super.dispose();
   }
 
@@ -46,133 +55,68 @@ class _PartyPageState extends State<PartyPage> {
         appBar: AppBar(title: const Text("You got it")),
         body: Padding(
             padding: EdgeInsets.only(top: 20),
-            child: Container(
+            child: SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      TextInput('What will you use?', substanceCtrl),
-                      SizedBox(height: 6),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                                padding: const EdgeInsets.only(left: 82.0),
-                                child: TextInput(
-                                  'Amount',
-                                  amountCtrl,
-                                  sufix: unit,
-                                )),
-                            UnitDropDown(
-                                amountUnitCtrl,
-                                (e) => {
-                                      setState(() {
-                                        unit = e;
-                                      })
-                                    }),
-                          ]),
-                      // Text(
-                      //     "Glad to see that you handled the 90-day-sobriety challenge")
-                      Padding(
-                          padding: EdgeInsets.all(10),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
-                                    EdgeInsets.all(10))),
-                            onPressed: () => recordUsage(context),
-                            child: Text(
-                              'USEEE',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ))
+                      Questionnaire(substanceCtrl, amountCtrl, amountUnitCtrl,
+                          unit, updateUnitState),
+                      UseButton(() => {recordUsage(context)})
                     ]))));
   }
 }
 
-class TextInput extends StatelessWidget {
-  const TextInput(this.name, this.controller, {super.key, this.sufix});
+class Questionnaire extends StatelessWidget {
+  const Questionnaire(this.substanceCtrl, this.amountCtrl, this.amountUnitCtrl,
+      this.unit, this.updateUnitState,
+      {super.key});
 
-  final TextEditingController controller;
-  final String name;
-  final String? sufix;
+  final TextEditingController substanceCtrl, amountCtrl, amountUnitCtrl;
+  final String unit;
+  final Function(String) updateUnitState;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: 200.0,
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            label: Text.rich(
-              TextSpan(
-                children: <InlineSpan>[
-                  WidgetSpan(
-                    child: Text(name),
-                  ),
-                  WidgetSpan(
-                    child: Text(
-                      '*',
-                      style: TextStyle(color: Colors.red),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            suffixText: sufix,
-            border: OutlineInputBorder(),
+    return Column(children: [
+      TextInput('What will you use?', substanceCtrl),
+      SizedBox(height: 6),
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Padding(
+            padding: const EdgeInsets.only(left: 82.0),
+            child: TextInput(
+              'Amount',
+              amountCtrl,
+              sufix: unit,
+            )),
+        UnitDropDown(amountUnitCtrl, updateUnitState),
+      ])
+    ]);
+  }
+}
+
+class UseButton extends StatelessWidget {
+  const UseButton(
+    this.callback, {
+    super.key,
+  });
+
+  final Function callback;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.all(10),
+        child: ElevatedButton(
+          style: ButtonStyle(
+              padding:
+                  MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10))),
+          onPressed: () => callback(),
+          child: Text(
+            'USE',
+            style: TextStyle(fontSize: 20),
           ),
-          style: TextStyle(fontSize: 13),
         ));
-  }
-}
-
-class UnitDropDown extends StatelessWidget {
-  const UnitDropDown(this.controller, this.callback, {super.key});
-  final Function(String) callback;
-
-  final TextEditingController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return DropDown(controller: controller, callback: callback);
-  }
-}
-
-class DropDown extends StatefulWidget {
-  const DropDown({super.key, required this.callback, required this.controller});
-  final TextEditingController controller;
-  final Function(String) callback;
-
-  @override
-  State<DropDown> createState() => _DropdownButtonExampleState();
-}
-
-List<String> possibleUnits = <String>['g', 'mg', 'µg'];
-
-class _DropdownButtonExampleState extends State<DropDown> {
-  String? dropdownValue = possibleUnits.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton2<String>(
-      value: dropdownValue,
-      style: const TextStyle(color: Colors.deepPurple),
-      onChanged: (String? value) {
-        setState(() {
-          dropdownValue = value!;
-          widget.controller.text = value;
-          widget.callback(value);
-        });
-      },
-      menuItemStyleData: MenuItemStyleData(height: 30),
-      items: possibleUnits.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
   }
 }

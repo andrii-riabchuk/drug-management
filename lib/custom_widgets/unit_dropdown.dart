@@ -25,7 +25,7 @@ class DropDown extends StatefulWidget {
 }
 
 class _DropdownButtonExampleState extends State<DropDown> {
-  String? dropdownValue = possibleUnits.first;
+  String? dropdownValue = possibleUnits[1];
 
   @override
   Widget build(BuildContext context) {

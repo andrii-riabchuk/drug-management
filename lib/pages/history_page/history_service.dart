@@ -27,7 +27,11 @@ class HistoryService {
       fromStorage = history;
     }
 
-    result = fromStorage.map((str) => Record.fromString(str)).toList();
+    result = fromStorage
+        .map((str) => Record.fromString(str))
+        .toList()
+        .reversed
+        .toList();
 
     return result;
   }

@@ -18,7 +18,7 @@ class PartyPage extends StatefulWidget {
 class _PartyPageState extends State<PartyPage> {
   final substanceCtrl = TextEditingController();
   final amountCtrl = TextEditingController();
-  final amountUnitCtrl = TextEditingController(text: possibleUnits.first);
+  final amountUnitCtrl = TextEditingController(text: possibleUnits[1]);
 
   String unit = possibleUnits.first;
   updateUnitState(String val) {

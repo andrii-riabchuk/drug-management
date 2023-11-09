@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'dart:developer' as developer;
-
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';

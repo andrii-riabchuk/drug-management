@@ -1,7 +1,7 @@
 import 'package:drug_management/custom_widgets/buttons/history_button.dart';
 import 'package:drug_management/custom_widgets/buttons/info_button_wrapper.dart';
 import 'package:drug_management/constants/constants.dart';
-import 'package:drug_management/pages/home_page/beautiful_circle_box.dart';
+import 'package:drug_management/custom_widgets/beautiful_circle_box.dart';
 import 'package:drug_management/pages/party/i_want_it.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
@@ -43,30 +43,28 @@ class MyHomePage extends StatelessWidget {
     daysUntilParty = DateTimeUtils.daysBetween(TODAY, partyDate);
 
     return Scaffold(
-        body: Padding(
-            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    DateInfo(lastUseDate, partyDate),
-                    Column(children: [
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
-                          child: Column(children: [
-                            UntilPartyBox(daysUntilParty: daysUntilParty),
-                            SoberBox(daysSober: daysSober)
-                          ])),
-                      IWantMeph(
-                        sp: sp,
-                        isAllowedToUse: daysUntilParty == 0,
-                      )
-                    ])
-                  ]),
-            )));
+        body: SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            DateInfo(lastUseDate, partyDate),
+            Column(children: [
+              Padding(
+                  padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+                  child: Column(children: [
+                    UntilPartyBox(daysUntilParty: daysUntilParty),
+                    SoberBox(daysSober: daysSober)
+                  ])),
+              IWantMeph(
+                sp: sp,
+                isAllowedToUse: daysUntilParty == 0,
+              )
+            ])
+          ]),
+    ));
   }
 }
 

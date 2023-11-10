@@ -1,0 +1,3 @@
+class AnotherHistoryService {
+  getRecords() {}
+}

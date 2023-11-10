@@ -58,7 +58,7 @@ class MyHomePage extends StatelessWidget {
                     UntilPartyBox(daysUntilParty: daysUntilParty),
                     SoberBox(daysSober: daysSober)
                   ])),
-              IWantMeph(
+              IWantIt(
                 sp: sp,
                 isAllowedToUse: daysUntilParty == 0,
               )

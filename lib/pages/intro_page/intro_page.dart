@@ -1,4 +1,5 @@
 import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/database/database.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
@@ -40,6 +41,8 @@ class _MyIntroPageState extends State<MyIntroPage> {
 
   @override
   Widget build(BuildContext context) {
+    DB.init();
+
     void onSetupCompleted() {
       var lastUseDate =
           DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc());

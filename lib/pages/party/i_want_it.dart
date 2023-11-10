@@ -19,8 +19,8 @@ class MyAppState extends ChangeNotifier {
   }
 }
 
-class IWantMeph extends StatelessWidget {
-  const IWantMeph({super.key, required this.sp, required this.isAllowedToUse});
+class IWantIt extends StatelessWidget {
+  const IWantIt({super.key, required this.sp, required this.isAllowedToUse});
 
   final SharedPreferences sp;
   final bool isAllowedToUse;

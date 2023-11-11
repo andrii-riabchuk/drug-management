@@ -5,8 +5,8 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DB {
-  static init() async {
-    final openDb = openDatabase(
+  static Future<Database> init() async {
+    final Future<Database> openDb = openDatabase(
       join(await getDatabasesPath(), 'drug_database.db'),
       onCreate: (db, version) {
         return db.execute(

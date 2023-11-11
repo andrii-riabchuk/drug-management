@@ -1,18 +1,18 @@
 class Record {
-  final int id;
-  final String body;
+  String body;
 
-  const Record(this.id, this.body);
+  Record(this.body);
+  Record.from(String dateTime, String substance, {String? amount})
+      : body = "$dateTime | $substance${amount != null ? " $amount" : ""}";
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'body': body,
     };
   }
 
   @override
   String toString() {
-    return 'Dog{id: $id, body: $body}';
+    return 'Record{body: $body}';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:drug_management/custom_widgets/text_input.dart';
 import 'package:drug_management/custom_widgets/unit_dropdown.dart';
 import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/database/models.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
@@ -42,9 +43,8 @@ class _PartyPageState extends State<PartyPage> {
     MySharedPreferences.instance.setString(storageKey, now);
 
     var amountFormatted = "${amountCtrl.text} ${amountUnitCtrl.text}";
-    var record = Record(now, substanceCtrl.text, amount: amountFormatted);
-    SharedPreferences.getInstance()
-        .then((sp) => HistoryService.addToHistory(sp, record));
+    var record = Record.from(now, substanceCtrl.text, amount: amountFormatted);
+    HistoryService().insertRecord(record);
 
     context.addNewPage(Routes.Home, removeOther: true);
   }

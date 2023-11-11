@@ -1,11 +1,11 @@
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/database/database.dart';
+import 'package:drug_management/database/models.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyIntroPage extends StatefulWidget {
   const MyIntroPage({super.key});
@@ -16,12 +16,12 @@ class MyIntroPage extends StatefulWidget {
 
 class _MyIntroPageState extends State<MyIntroPage> {
   DateTime selectedDate = DateTime.now();
-  final myController = TextEditingController();
+  final substanceController = TextEditingController();
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    myController.dispose();
+    substanceController.dispose();
     super.dispose();
   }
 
@@ -41,7 +41,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
 
   @override
   Widget build(BuildContext context) {
-    DB.init();
+    DB.open();
 
     void onSetupCompleted() {
       var lastUseDate =
@@ -52,9 +52,8 @@ class _MyIntroPageState extends State<MyIntroPage> {
       MySharedPreferences.instance
           .setBoolean(StorageKeys.IsSetupCompleted, true);
 
-      var record = Record(lastUseDate, myController.text);
-      SharedPreferences.getInstance()
-          .then((sp) => HistoryService.addToHistory(sp, record));
+      var record = Record.from(lastUseDate, substanceController.text);
+      HistoryService().insertRecord(record);
 
       context.redirectTo(Routes.Home);
     }
@@ -95,7 +94,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
                   height: 30,
                   width: 100,
                   child: TextField(
-                    controller: myController,
+                    controller: substanceController,
                     decoration: InputDecoration(
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0, horizontal: 5),

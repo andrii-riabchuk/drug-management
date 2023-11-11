@@ -41,6 +41,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
 
   @override
   Widget build(BuildContext context) {
+    DB.ensureDeleted();
     DB.open();
 
     void onSetupCompleted() {
@@ -52,7 +53,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
       MySharedPreferences.instance
           .setBoolean(StorageKeys.IsSetupCompleted, true);
 
-      var record = Record.from(lastUseDate, substanceController.text);
+      var record = Record(selectedDate.toUtc(), substanceController.text);
       HistoryService().insertRecord(record);
 
       context.redirectTo(Routes.Home);

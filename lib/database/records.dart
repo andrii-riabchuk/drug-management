@@ -6,7 +6,8 @@ const String RECORDS_TABLE = "RECORDS";
 
 extension Records on Database {
   insertSampleRecord() async {
-    var exampleRecord = Record("speedball (AMF 1g + Heroin 0.3g)");
+    var exampleRecord =
+        Record(DateTime.now(), "speedball (AMF 1g + Heroin 0.3g)");
 
     await insert(
       RECORDS_TABLE,
@@ -20,11 +21,14 @@ extension Records on Database {
   }
 
   Future<List<Record>> retrieveRecords() async {
-    final List<Map<String, dynamic>> maps = await query(RECORDS_TABLE);
+    final List<Map<String, dynamic>> maps =
+        await query(RECORDS_TABLE, orderBy: "dateTime desc");
 
     return List.generate(maps.length, (i) {
       return Record(
-        maps[i]['body'] as String,
+        DateTime.parse(maps[i]['dateTime']),
+        maps[i]['substance'] as String,
+        amount: maps[i]['amount'] as String?,
       );
     });
   }

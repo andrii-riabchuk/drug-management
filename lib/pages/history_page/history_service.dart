@@ -17,7 +17,7 @@ class HistoryService {
 class RecordView {
   final String body;
 
-  RecordView(Record record) : body = record.body;
+  RecordView(Record record) : body = record.toString();
 
   const RecordView.fromString(this.body);
 }

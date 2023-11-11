@@ -7,7 +7,6 @@ import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PartyPage extends StatefulWidget {
   const PartyPage({super.key});
@@ -43,7 +42,8 @@ class _PartyPageState extends State<PartyPage> {
     MySharedPreferences.instance.setString(storageKey, now);
 
     var amountFormatted = "${amountCtrl.text} ${amountUnitCtrl.text}";
-    var record = Record.from(now, substanceCtrl.text, amount: amountFormatted);
+    var record = Record(DateTime.now().toUtc(), substanceCtrl.text,
+        amount: amountFormatted);
     HistoryService().insertRecord(record);
 
     context.addNewPage(Routes.Home, removeOther: true);

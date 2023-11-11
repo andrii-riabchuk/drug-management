@@ -25,7 +25,7 @@ class DateTimeUtils {
 
 extension DateTimeExtension on DateTime {
   DateTime plus({int days = 0}) {
-    return this.add(Duration(days: days));
+    return add(Duration(days: days));
   }
 }
 

@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
+
   prefs.clear();
 
   runApp(MyApp(prefs: prefs));
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         Routes.Home: (context) => ChangeNotifierProvider(
             create: (context) =>
                 MyAppState(current: prefs.getInt("wantMeph") ?? 0),
-            child: MyHomePage(sp: prefs)),
+            child: Home()),
         Routes.Party: (context) => const PartyPage(),
         Routes.Secret: (context) => const SecretPage(),
         Routes.History: (context) => HistoryPage()

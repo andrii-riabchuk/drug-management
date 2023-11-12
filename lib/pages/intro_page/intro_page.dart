@@ -1,11 +1,10 @@
 import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/database/application_data.dart';
 import 'package:drug_management/database/database.dart';
-import 'package:drug_management/database/models.dart';
+import 'package:drug_management/database/models/record/record.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
-import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class MyIntroPage extends StatefulWidget {
   const MyIntroPage({super.key});
@@ -45,13 +44,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
     DB.open();
 
     void onSetupCompleted() {
-      var lastUseDate =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(selectedDate.toUtc());
-
-      MySharedPreferences.instance
-          .setString(StorageKeys.LastUseDate, lastUseDate);
-      MySharedPreferences.instance
-          .setBoolean(StorageKeys.IsSetupCompleted, true);
+      ApplicationData.setSetupCompleted();
 
       var record = Record(selectedDate.toUtc(), substanceController.text);
       HistoryService().insertRecord(record);
@@ -60,8 +53,7 @@ class _MyIntroPageState extends State<MyIntroPage> {
     }
 
     void skip() {
-      MySharedPreferences.instance
-          .setBoolean(StorageKeys.IsSetupCompleted, true);
+      ApplicationData.setSetupCompleted();
       context.redirectTo(Routes.Home);
     }
 

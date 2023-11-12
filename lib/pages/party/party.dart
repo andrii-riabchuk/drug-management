@@ -1,7 +1,7 @@
 import 'package:drug_management/custom_widgets/text_input.dart';
 import 'package:drug_management/custom_widgets/unit_dropdown.dart';
 import 'package:drug_management/constants/constants.dart';
-import 'package:drug_management/database/models.dart';
+import 'package:drug_management/database/models/record/record.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';

@@ -1,8 +1,16 @@
 import 'package:drug_management/database/database.dart';
-import 'package:drug_management/database/models.dart';
-import 'package:drug_management/database/records.dart';
+import 'package:drug_management/database/models/record/record.dart';
+import 'package:drug_management/database/models/record/records_crud.dart';
 
 class HistoryService {
+  Future<DateTime?> getLastUseDate() async {
+    final db = await DB.open();
+    var records = await db.retrieveRecords();
+    if (records.isEmpty) return null;
+
+    return records[0].dateTime;
+  }
+
   Future<List<Record>> getRecords() async {
     final db = await DB.open();
     return db.retrieveRecords();

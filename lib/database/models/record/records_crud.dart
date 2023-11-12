@@ -1,4 +1,4 @@
-import 'package:drug_management/database/models.dart';
+import 'package:drug_management/database/models/record/record.dart';
 import 'package:sqflite/sqflite.dart';
 
 // ignore: constant_identifier_names

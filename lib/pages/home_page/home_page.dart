@@ -2,26 +2,43 @@ import 'package:drug_management/custom_widgets/buttons/history_button.dart';
 import 'package:drug_management/custom_widgets/buttons/info_button_wrapper.dart';
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/custom_widgets/beautiful_circle_box.dart';
+import 'package:drug_management/database/application_data.dart';
 import 'package:drug_management/pages/party/i_want_it.dart';
-import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/date_time_utils.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+class Home extends StatefulWidget {
+  const Home({super.key});
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  loadData() async {
+    await ApplicationData.loadHomePageData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: loadData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          return MyHomePage();
+        });
+  }
+}
 
 class MyHomePage extends StatelessWidget {
   // ignore: constant_identifier_names
   static const int PARTY_PERIOD = 90;
 
-  const MyHomePage({super.key, required this.sp});
-
-  final SharedPreferences sp;
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    bool isSetupCompleted = sp.getBoolIfExist(StorageKeys.IsSetupCompleted);
-    String? lastUseDateString = sp.getString(StorageKeys.LastUseDate);
-    if (!isSetupCompleted) {
+    if (!ApplicationData.setupCompleted) {
       WidgetsBinding.instance
           .addPostFrameCallback((_) => context.redirectTo(Routes.Setup));
       return Scaffold();
@@ -30,13 +47,12 @@ class MyHomePage extends StatelessWidget {
     // ignore: non_constant_identifier_names
     final TODAY = DateTime.now();
 
-    DateTime? lastUseDate;
+    DateTime? lastUseDate = ApplicationData.lastUseDate;
     DateTime partyDate = DateTime.now();
     int? daysSober;
     int daysUntilParty;
 
-    if (lastUseDateString != null) {
-      lastUseDate = DateTimeUtils.parseUtcFormatted(lastUseDateString);
+    if (lastUseDate != null) {
       partyDate = lastUseDate.plus(days: PARTY_PERIOD);
       daysSober = DateTimeUtils.daysBetween(lastUseDate, TODAY);
     }
@@ -59,9 +75,9 @@ class MyHomePage extends StatelessWidget {
                     SoberBox(daysSober: daysSober)
                   ])),
               IWantIt(
-                sp: sp,
                 isAllowedToUse: daysUntilParty == 0,
-              )
+              ),
+              Text(ApplicationData.laConfig ?? "none_config")
             ])
           ]),
     ));

@@ -1,6 +1,6 @@
 import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:flutter/material.dart';
-import 'package:drug_management/database/models.dart';
+import 'package:drug_management/database/models/record/record.dart';
 
 class HistoryPage extends StatelessWidget {
   HistoryPage({super.key});

@@ -16,16 +16,37 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  loadData() async {
-    await ApplicationData.loadHomePageData();
+  Future<bool> loadData() async {
+    return ApplicationData.loadHomePageData();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
         future: loadData(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          return MyHomePage();
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.hasData) {
+            return MyHomePage();
+          }
+          if (snapshot.hasError) {
+            return Text('Just hanging around..');
+          } else {
+            return Scaffold(
+                body: Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: CircularProgressIndicator(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 16),
+                    child: Text('Awaiting data...'),
+                  )
+                ])));
+          }
         });
   }
 }
@@ -76,8 +97,8 @@ class MyHomePage extends StatelessWidget {
                   ])),
               IWantIt(
                 isAllowedToUse: daysUntilParty == 0,
+                initialCount: ApplicationData.iWantItCount,
               ),
-              Text(ApplicationData.laConfig ?? "none_config")
             ])
           ]),
     ));

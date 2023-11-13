@@ -1,5 +1,4 @@
 import 'package:drug_management/database/models/config/config.dart';
-import 'package:drug_management/database/models/config/configs_crud.dart';
 import 'package:drug_management/database/models/record/record.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -23,8 +22,6 @@ class DB {
       },
       version: 1,
     );
-
-    (await openDb).insertSampleConfig();
 
     return openDb;
   }

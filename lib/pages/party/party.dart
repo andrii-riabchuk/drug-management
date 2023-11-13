@@ -3,10 +3,8 @@ import 'package:drug_management/custom_widgets/unit_dropdown.dart';
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/database/models/record/record.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
-import 'package:drug_management/shared_pref.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
-import 'package:drug_management/utils/date_time_utils.dart';
 
 class PartyPage extends StatefulWidget {
   const PartyPage({super.key});
@@ -20,7 +18,7 @@ class _PartyPageState extends State<PartyPage> {
   final amountCtrl = TextEditingController();
   final amountUnitCtrl = TextEditingController(text: possibleUnits[1]);
 
-  String unit = possibleUnits.first;
+  String unit = possibleUnits[1];
   updateUnitState(String val) {
     setState(() {
       unit = val;
@@ -37,10 +35,6 @@ class _PartyPageState extends State<PartyPage> {
   }
 
   void recordUsage(BuildContext context) {
-    var storageKey = StorageKeys.LastUseDate;
-    var now = DateTimeUtils.utcNowFormatted();
-    MySharedPreferences.instance.setString(storageKey, now);
-
     var amountFormatted = "${amountCtrl.text} ${amountUnitCtrl.text}";
     var record = Record(DateTime.now().toUtc(), substanceCtrl.text,
         amount: amountFormatted);

@@ -7,24 +7,15 @@ import 'package:drug_management/pages/party/party.dart';
 import 'package:drug_management/pages/party/secret_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  prefs.clear();
-
-  runApp(MyApp(prefs: prefs));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-    required this.prefs,
-  });
-
-  final SharedPreferences prefs;
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +31,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.Setup: (context) => const MyIntroPage(),
         Routes.Home: (context) => ChangeNotifierProvider(
-            create: (context) =>
-                MyAppState(current: prefs.getInt("wantMeph") ?? 0),
-            child: Home()),
+            create: (context) => MyAppState(), child: Home()),
         Routes.Party: (context) => const PartyPage(),
         Routes.Secret: (context) => const SecretPage(),
         Routes.History: (context) => HistoryPage()

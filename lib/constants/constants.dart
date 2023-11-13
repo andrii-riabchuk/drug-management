@@ -4,6 +4,7 @@ class StorageKeys {
   static const String IsSetupCompleted = "isSetupCompleted";
   static const String LastUseDate = "lastUseDate";
   static const String History = "history";
+  static const String I_WANT_IT = "i_want_it";
 }
 
 class Routes {

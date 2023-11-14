@@ -1,4 +1,5 @@
 import 'package:drug_management/database/models/config/config.dart';
+import 'package:drug_management/database/models/note/note.dart';
 import 'package:drug_management/database/models/record/record.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -7,7 +8,8 @@ class DB {
   static const String databaseName = 'drug_database.db';
   static const List<String> tables = [
     CREATE_RECORDS_TABLE,
-    CREATE_CONFIGS_TABLE
+    CREATE_CONFIGS_TABLE,
+    CREATE_NOTES_TABLE
   ];
 
   static Future<Database> open() async {

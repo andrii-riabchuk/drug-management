@@ -17,6 +17,7 @@ class _PartyPageState extends State<PartyPage> {
   final substanceCtrl = TextEditingController();
   final amountCtrl = TextEditingController();
   final amountUnitCtrl = TextEditingController(text: possibleUnits[1]);
+  final tripDescriptionCtrl = TextEditingController();
 
   String unit = possibleUnits[1];
   updateUnitState(String val) {
@@ -31,16 +32,17 @@ class _PartyPageState extends State<PartyPage> {
     substanceCtrl.dispose();
     amountCtrl.dispose();
     amountUnitCtrl.dispose();
+    tripDescriptionCtrl.dispose();
     super.dispose();
   }
 
   void recordUsage(BuildContext context) {
     var amountFormatted = "${amountCtrl.text} ${amountUnitCtrl.text}";
-    var record = Record(DateTime.now().toUtc(), substanceCtrl.text,
-        amount: amountFormatted);
+    var record = Record.literally(DateTime.now().toUtc(), substanceCtrl.text,
+        amount: amountFormatted, description: tripDescriptionCtrl.text);
     HistoryService().insertRecord(record);
 
-    context.addNewPage(Routes.Home, removeOther: true);
+    context.open(Routes.Home, removeOther: true);
   }
 
   @override
@@ -56,7 +58,7 @@ class _PartyPageState extends State<PartyPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Questionnaire(substanceCtrl, amountCtrl, amountUnitCtrl,
-                          unit, updateUnitState),
+                          tripDescriptionCtrl, unit, updateUnitState),
                       UseButton(() => {recordUsage(context)})
                     ]))));
   }
@@ -64,10 +66,13 @@ class _PartyPageState extends State<PartyPage> {
 
 class Questionnaire extends StatelessWidget {
   const Questionnaire(this.substanceCtrl, this.amountCtrl, this.amountUnitCtrl,
-      this.unit, this.updateUnitState,
+      this.tripDescriptionCtrl, this.unit, this.updateUnitState,
       {super.key});
 
-  final TextEditingController substanceCtrl, amountCtrl, amountUnitCtrl;
+  final TextEditingController substanceCtrl,
+      amountCtrl,
+      amountUnitCtrl,
+      tripDescriptionCtrl;
   final String unit;
   final Function(String) updateUnitState;
 
@@ -85,7 +90,19 @@ class Questionnaire extends StatelessWidget {
               sufix: unit,
             )),
         UnitDropDown(amountUnitCtrl, updateUnitState),
-      ])
+      ]),
+      Text("Trip description"),
+      Container(
+          width: 200,
+          height: 300,
+          decoration: BoxDecoration(
+              border: Border.all(color: const Color.fromARGB(255, 28, 34, 44))),
+          child: TextField(
+            controller: tripDescriptionCtrl,
+            expands: true,
+            maxLines: null,
+            keyboardType: TextInputType.text,
+          ))
     ]);
   }
 }

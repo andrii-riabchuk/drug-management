@@ -13,6 +13,7 @@ class Routes {
   static const String Party = "/party";
   static const String Secret = "/secret";
   static const String History = "/history";
+  static const String Record = "/record";
 }
 
 class Messages {

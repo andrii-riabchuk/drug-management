@@ -22,10 +22,10 @@ class HistoryService {
   }
 }
 
-class RecordView {
-  final String body;
+// class RecordView {
+//   final String body;
 
-  RecordView(Record record) : body = record.toString();
+//   RecordView(Record record) : body = record.toString();
 
-  const RecordView.fromString(this.body);
-}
+//   const RecordView.fromString(this.body);
+// }

@@ -7,7 +7,7 @@ const String RECORDS_TABLE = "RECORDS";
 extension Records on Database {
   insertSampleRecord() async {
     var exampleRecord =
-        Record(DateTime.now(), "speedball (AMF 1g + Heroin 0.3g)");
+        Record.literally(DateTime.now(), "speedball (AMF 1g + Heroin 0.3g)");
 
     await insert(
       RECORDS_TABLE,
@@ -25,11 +25,7 @@ extension Records on Database {
         await query(RECORDS_TABLE, orderBy: "dateTime desc");
 
     return List.generate(maps.length, (i) {
-      return Record(
-        DateTime.parse(maps[i]['dateTime']),
-        maps[i]['substance'] as String,
-        amount: maps[i]['amount'] as String?,
-      );
+      return Record(maps[i]);
     });
   }
 }

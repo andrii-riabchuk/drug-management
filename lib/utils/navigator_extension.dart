@@ -6,11 +6,12 @@ extension NavigatorExtension on BuildContext {
     Navigator.pushNamed(this, route);
   }
 
-  addNewPage(route, {bool removeOther = false}) {
+  open(route, {Object? argument, bool removeOther = false}) {
     if (removeOther) {
-      Navigator.of(this).pushNamedAndRemoveUntil(route, (_) => false);
+      Navigator.of(this)
+          .pushNamedAndRemoveUntil(route, (_) => false, arguments: argument);
     } else {
-      Navigator.pushNamed(this, route);
+      Navigator.pushNamed(this, route, arguments: argument);
     }
   }
 

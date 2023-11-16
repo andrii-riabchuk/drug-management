@@ -1,5 +1,6 @@
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/pages/history_page/history_page.dart';
+import 'package:drug_management/pages/history_page/record_page.dart';
 import 'package:drug_management/pages/home_page/home_page.dart';
 import 'package:drug_management/pages/intro_page/intro_page.dart';
 import 'package:drug_management/pages/party/i_want_it.dart';
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
             create: (context) => MyAppState(), child: Home()),
         Routes.Party: (context) => const PartyPage(),
         Routes.Secret: (context) => const SecretPage(),
-        Routes.History: (context) => HistoryPage()
+        Routes.History: (context) => HistoryPage(),
+        Routes.Record: (context) => RecordPage()
       },
     );
   }

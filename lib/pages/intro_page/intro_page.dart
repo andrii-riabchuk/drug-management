@@ -46,7 +46,8 @@ class _MyIntroPageState extends State<MyIntroPage> {
     void onSetupCompleted() {
       ApplicationData.setSetupCompleted();
 
-      var record = Record(selectedDate.toUtc(), substanceController.text);
+      var record =
+          Record.literally(selectedDate.toUtc(), substanceController.text);
       HistoryService().insertRecord(record);
 
       context.redirectTo(Routes.Home);

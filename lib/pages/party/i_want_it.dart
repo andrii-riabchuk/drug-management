@@ -38,7 +38,7 @@ class IWantIt extends StatelessWidget {
             appState.timer =
                 Timer.periodic(Duration(milliseconds: 2000), (timer) {
               appState.timer?.cancel();
-              context.addNewPage(Routes.Secret);
+              context.open(Routes.Secret);
             });
           },
           onPanCancel: () {
@@ -53,7 +53,7 @@ class IWantIt extends StatelessWidget {
               onPressed: () {
                 appState.wantMeph();
                 if (isAllowedToUse) {
-                  context.addNewPage(Routes.Party);
+                  context.open(Routes.Party);
                 }
               },
               child: Text('I WANT IT'))),

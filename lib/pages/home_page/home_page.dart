@@ -68,7 +68,7 @@ class MyHomePage extends StatelessWidget {
     // ignore: non_constant_identifier_names
     final TODAY = DateTime.now();
 
-    DateTime? lastUseDate = ApplicationData.lastUseDate;
+    DateTime? lastUseDate = ApplicationData.lastUseRecord?.dateTime;
     DateTime partyDate = DateTime.now();
     int? daysSober;
     int daysUntilParty;
@@ -78,6 +78,10 @@ class MyHomePage extends StatelessWidget {
       daysSober = DateTimeUtils.daysBetween(lastUseDate, TODAY);
     }
     daysUntilParty = DateTimeUtils.daysBetween(TODAY, partyDate);
+
+    bool showRecordForEditing =
+        lastUseDate != null && lastUseDate.difference(TODAY).inHours < 24;
+    bool isAllowedToUse = daysUntilParty == 0;
 
     return Scaffold(
         body: SizedBox(
@@ -96,7 +100,7 @@ class MyHomePage extends StatelessWidget {
                     SoberBox(daysSober: daysSober)
                   ])),
               IWantIt(
-                isAllowedToUse: daysUntilParty == 0,
+                isAllowedToUse: isAllowedToUse || showRecordForEditing,
                 initialCount: ApplicationData.iWantItCount,
               ),
             ])

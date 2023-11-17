@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:drug_management/custom_widgets/text_input.dart';
 import 'package:drug_management/custom_widgets/unit_dropdown.dart';
 import 'package:drug_management/constants/constants.dart';
+import 'package:drug_management/database/application_data.dart';
 import 'package:drug_management/database/models/record/record.dart';
 import 'package:drug_management/pages/history_page/history_service.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
@@ -19,10 +22,14 @@ class _PartyPageState extends State<PartyPage> {
   final amountUnitCtrl = TextEditingController(text: possibleUnits[1]);
   final tripDescriptionCtrl = TextEditingController();
 
+  bool isEditingMode = false;
+  Record? originalRecord;
+
   String unit = possibleUnits[1];
   updateUnitState(String val) {
     setState(() {
       unit = val;
+      amountUnitCtrl.text = val;
     });
   }
 
@@ -38,11 +45,44 @@ class _PartyPageState extends State<PartyPage> {
 
   void recordUsage(BuildContext context) {
     var amountFormatted = "${amountCtrl.text} ${amountUnitCtrl.text}";
-    var record = Record.literally(DateTime.now().toUtc(), substanceCtrl.text,
-        amount: amountFormatted, description: tripDescriptionCtrl.text);
-    HistoryService().insertRecord(record);
+    log('record usage ' + originalRecord!.id.toString());
+    if (isEditingMode) {
+      var record = Record.literally(
+          originalRecord!.dateTime, substanceCtrl.text,
+          amount: amountFormatted,
+          description: tripDescriptionCtrl.text,
+          id: originalRecord!.id);
+      HistoryService().updateRecord(record);
+    } else {
+      var record = Record.literally(DateTime.now().toUtc(), substanceCtrl.text,
+          amount: amountFormatted, description: tripDescriptionCtrl.text);
+      HistoryService().insertRecord(record);
+    }
 
     context.open(Routes.Home, removeOther: true);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (ApplicationData.lastUseRecord != null &&
+        ApplicationData.lastUseRecord!.dateTime
+                .difference(DateTime.now())
+                .inHours <
+            24) {
+      log("too much again");
+      isEditingMode = true;
+      originalRecord = ApplicationData.lastUseRecord;
+      substanceCtrl.text = originalRecord?.substance ?? "";
+      if (originalRecord!.amount != null) {
+        var amountComponents = originalRecord!.amount!.split(' ');
+        amountCtrl.text =
+            amountComponents.sublist(0, amountComponents.length - 1).join(' ');
+        updateUnitState(amountComponents.reversed.first);
+      }
+      tripDescriptionCtrl.text = originalRecord?.description ?? "";
+    }
   }
 
   @override
@@ -89,7 +129,12 @@ class Questionnaire extends StatelessWidget {
               amountCtrl,
               sufix: unit,
             )),
-        UnitDropDown(amountUnitCtrl, updateUnitState),
+        UnitDropDown(
+            amountUnitCtrl.text.isNotEmpty
+                ? amountUnitCtrl.text
+                : possibleUnits[1],
+            amountUnitCtrl,
+            updateUnitState),
       ]),
       Text("Trip description"),
       Container(

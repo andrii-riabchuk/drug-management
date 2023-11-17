@@ -5,19 +5,21 @@ const String CREATE_RECORDS_TABLE =
     'CREATE TABLE Records(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, dateTime DATETIME, substance TEXT, amount TEXT, description TEXT)';
 
 class Record {
+  int? id;
   DateTime dateTime;
   String substance;
   String? amount;
   String? description;
 
   Record.literally(this.dateTime, this.substance,
-      {this.amount, this.description});
+      {this.amount, this.description, this.id});
 
   Record(Map<String, dynamic> map)
       : dateTime = DateTime.parse(map['dateTime']),
         substance = map['substance'] as String,
         amount = map['amount'] as String?,
-        description = map['description'] as String?;
+        description = map['description'] as String?,
+        id = map['id'] as int;
 
   Map<String, dynamic> toMap() {
     return {

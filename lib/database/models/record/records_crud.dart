@@ -20,6 +20,12 @@ extension Records on Database {
     await insert(RECORDS_TABLE, record.toMap());
   }
 
+  updateRecord(Record record) async {
+    if (record.id != null) {
+      await update(RECORDS_TABLE, record.toMap(), where: "id = ${record.id}");
+    }
+  }
+
   Future<List<Record>> retrieveRecords() async {
     final List<Map<String, dynamic>> maps =
         await query(RECORDS_TABLE, orderBy: "dateTime desc");

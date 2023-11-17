@@ -4,19 +4,24 @@ import 'package:flutter/material.dart';
 List<String> possibleUnits = <String>['g', 'mg', 'µg'];
 
 class UnitDropDown extends StatelessWidget {
-  const UnitDropDown(this.controller, this.callback, {super.key});
+  const UnitDropDown(this.defaultUnit, this.controller, this.callback,
+      {super.key});
+  final String defaultUnit;
+
   final Function(String) callback;
 
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
-    return DropDown(controller: controller, callback: callback);
+    return DropDown(defaultUnit, controller: controller, callback: callback);
   }
 }
 
 class DropDown extends StatefulWidget {
-  const DropDown({super.key, required this.callback, required this.controller});
+  const DropDown(this.defaultValue,
+      {super.key, required this.callback, required this.controller});
+  final String defaultValue;
   final TextEditingController controller;
   final Function(String) callback;
 
@@ -25,10 +30,12 @@ class DropDown extends StatefulWidget {
 }
 
 class _DropdownButtonExampleState extends State<DropDown> {
-  String? dropdownValue = possibleUnits[1];
+  String? dropdownValue;
 
   @override
   Widget build(BuildContext context) {
+    dropdownValue ??= widget.defaultValue;
+
     return DropdownButton2<String>(
       value: dropdownValue,
       style: const TextStyle(color: Colors.deepPurple),

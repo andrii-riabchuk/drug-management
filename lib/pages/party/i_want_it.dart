@@ -29,7 +29,7 @@ class IWantIt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>(); // ← 2
+    var appState = context.watch<MyAppState>();
     if (appState.current == 0) appState.current = initialCount;
 
     return Column(children: [

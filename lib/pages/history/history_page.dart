@@ -1,5 +1,5 @@
 import 'package:drug_management/constants/constants.dart';
-import 'package:drug_management/pages/history_page/history_service.dart';
+import 'package:drug_management/pages/history/history_service.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:drug_management/database/models/record/record.dart';

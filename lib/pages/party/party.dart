@@ -5,7 +5,7 @@ import 'package:drug_management/custom_widgets/unit_dropdown.dart';
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/database/application_data.dart';
 import 'package:drug_management/database/models/record/record.dart';
-import 'package:drug_management/pages/history_page/history_service.dart';
+import 'package:drug_management/pages/history/history_service.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +45,6 @@ class _PartyPageState extends State<PartyPage> {
 
   void recordUsage(BuildContext context) {
     var amountFormatted = "${amountCtrl.text} ${amountUnitCtrl.text}";
-    log('record usage ' + originalRecord!.id.toString());
     if (isEditingMode) {
       var record = Record.literally(
           originalRecord!.dateTime, substanceCtrl.text,
@@ -71,7 +70,6 @@ class _PartyPageState extends State<PartyPage> {
                 .difference(DateTime.now())
                 .inHours <
             24) {
-      log("too much again");
       isEditingMode = true;
       originalRecord = ApplicationData.lastUseRecord;
       substanceCtrl.text = originalRecord?.substance ?? "";

@@ -8,8 +8,10 @@ class NotesService {
     return db.getNotes();
   }
 
-  addNote(String body) async {
+  Future<Note> addNote(String body) async {
     final db = await DB.open();
-    db.insertNote(Note.literally(DateTime.now(), body));
+    final note = Note.literally(DateTime.now(), body);
+    await db.insertNote(note);
+    return note;
   }
 }

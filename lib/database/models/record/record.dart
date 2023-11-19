@@ -30,6 +30,15 @@ class Record {
     };
   }
 
+  List<String> splitAmountUnit() {
+    final amountComponents = amount!.split(' ');
+    var amountStr =
+        amountComponents.sublist(0, amountComponents.length - 1).join(' ');
+    var unitStr = amountComponents.last;
+
+    return [amountStr, unitStr];
+  }
+
   @override
   String toString() {
     var dateTimeFormatted = dateTime.formatDateTimeShort();

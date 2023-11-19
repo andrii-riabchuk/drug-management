@@ -5,17 +5,6 @@ import 'package:sqflite/sqflite.dart';
 const String RECORDS_TABLE = "RECORDS";
 
 extension Records on Database {
-  insertSampleRecord() async {
-    var exampleRecord =
-        Record.literally(DateTime.now(), "speedball (AMF 1g + Heroin 0.3g)");
-
-    await insert(
-      RECORDS_TABLE,
-      exampleRecord.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
   insertRecord(Record record) async {
     await insert(RECORDS_TABLE, record.toMap());
   }

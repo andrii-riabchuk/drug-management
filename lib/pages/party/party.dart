@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:drug_management/custom_widgets/text_input.dart';
 import 'package:drug_management/custom_widgets/unit_dropdown.dart';
@@ -28,6 +27,13 @@ class _PartyPageState extends State<PartyPage> {
   final amountUnitCtrl = TextEditingController(text: possibleUnits[1]);
   final tripDescriptionCtrl = TextEditingController();
 
+  late List<TextEditingController> controllers = [
+    substanceCtrl,
+    amountCtrl,
+    amountUnitCtrl,
+    tripDescriptionCtrl
+  ];
+
   bool isEditingMode = false;
   Record? originalRecord;
 
@@ -42,10 +48,9 @@ class _PartyPageState extends State<PartyPage> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    substanceCtrl.dispose();
-    amountCtrl.dispose();
-    amountUnitCtrl.dispose();
-    tripDescriptionCtrl.dispose();
+    for (var controller in controllers) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -73,12 +78,13 @@ class _PartyPageState extends State<PartyPage> {
 
     if (isEditingMode) {
       originalRecord = ApplicationData.lastUseRecord;
+      if (originalRecord == null) return;
+
       substanceCtrl.text = originalRecord?.substance ?? "";
       if (originalRecord!.amount != null) {
-        var amountComponents = originalRecord!.amount!.split(' ');
-        amountCtrl.text =
-            amountComponents.sublist(0, amountComponents.length - 1).join(' ');
-        updateUnitState(amountComponents.reversed.first);
+        var amountAndUnit = originalRecord!.splitAmountUnit();
+        amountCtrl.text = amountAndUnit[0];
+        updateUnitState(amountAndUnit[1]);
       }
       tripDescriptionCtrl.text = originalRecord?.description ?? "";
     }

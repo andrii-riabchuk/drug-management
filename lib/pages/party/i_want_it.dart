@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/database/application_data.dart';
+import 'package:drug_management/pages/party/party.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,9 +23,12 @@ class MyAppState extends ChangeNotifier {
 
 class IWantIt extends StatelessWidget {
   const IWantIt(
-      {super.key, required this.isAllowedToUse, this.initialCount = 0});
+      {super.key,
+      required this.isAllowedToUse,
+      this.showRecordForEditing = false,
+      this.initialCount = 0});
 
-  final bool isAllowedToUse;
+  final bool isAllowedToUse, showRecordForEditing;
   final int initialCount;
 
   @override
@@ -52,8 +56,10 @@ class IWantIt extends StatelessWidget {
                   backgroundColor: Color.fromARGB(255, 255, 0, 149)),
               onPressed: () {
                 appState.wantMeph();
-                if (isAllowedToUse) {
-                  context.open(Routes.Party);
+                if (isAllowedToUse || showRecordForEditing) {
+                  context.open(Routes.Party,
+                      argument:
+                          PartyPageProps(editingMode: showRecordForEditing));
                 }
               },
               child: Text('I WANT IT'))),

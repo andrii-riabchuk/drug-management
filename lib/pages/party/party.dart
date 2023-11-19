@@ -8,6 +8,12 @@ import 'package:drug_management/database/models/record/record.dart';
 import 'package:drug_management/pages/history/history_service.dart';
 import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+
+class PartyPageProps {
+  PartyPageProps({this.editingMode = false});
+  bool editingMode;
+}
 
 class PartyPage extends StatefulWidget {
   const PartyPage({super.key});
@@ -61,16 +67,11 @@ class _PartyPageState extends State<PartyPage> {
     context.open(Routes.Home, removeOther: true);
   }
 
-  @override
-  void initState() {
-    super.initState();
+  setEditingModeIfNeeded() {
+    final props = ModalRoute.of(context)!.settings.arguments as PartyPageProps;
+    isEditingMode = props.editingMode;
 
-    if (ApplicationData.lastUseRecord != null &&
-        ApplicationData.lastUseRecord!.dateTime
-                .difference(DateTime.now())
-                .inHours <
-            24) {
-      isEditingMode = true;
+    if (isEditingMode) {
       originalRecord = ApplicationData.lastUseRecord;
       substanceCtrl.text = originalRecord?.substance ?? "";
       if (originalRecord!.amount != null) {
@@ -81,6 +82,13 @@ class _PartyPageState extends State<PartyPage> {
       }
       tripDescriptionCtrl.text = originalRecord?.description ?? "";
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance
+        .addPostFrameCallback((_) => setEditingModeIfNeeded());
   }
 
   @override

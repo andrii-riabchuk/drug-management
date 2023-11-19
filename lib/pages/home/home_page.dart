@@ -80,7 +80,7 @@ class MyHomePage extends StatelessWidget {
     daysUntilParty = DateTimeUtils.daysBetween(TODAY, partyDate);
 
     bool showRecordForEditing =
-        lastUseDate != null && lastUseDate.difference(TODAY).inHours < 24;
+        lastUseDate != null && TODAY.difference(lastUseDate).inHours < 24;
     bool isAllowedToUse = daysUntilParty == 0;
 
     return Scaffold(
@@ -100,7 +100,8 @@ class MyHomePage extends StatelessWidget {
                     SoberBox(daysSober: daysSober)
                   ])),
               IWantIt(
-                isAllowedToUse: isAllowedToUse || showRecordForEditing,
+                isAllowedToUse: isAllowedToUse,
+                showRecordForEditing: showRecordForEditing,
                 initialCount: ApplicationData.iWantItCount,
               ),
             ])

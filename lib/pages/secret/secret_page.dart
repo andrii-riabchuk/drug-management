@@ -40,23 +40,25 @@ class _SecretPageState extends State<SecretPage> {
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Scaffold(
               appBar: AppBar(title: Text("Notes")),
-              body: Column(children: [
-                TextField(controller: _controller),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 0, 149)),
-                    onPressed: () {
-                      if (_controller.text.isEmpty) return;
-                      notesService
-                          .addNote(_controller.text)
-                          .then((note) => setState(() {
-                                noteList.add(note);
-                              }));
-                      _controller.text = "";
-                    },
-                    child: Text('note')),
-                Journal(noteList)
-              ]));
+              body: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(children: [
+                    TextField(controller: _controller),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 0, 149)),
+                        onPressed: () {
+                          if (_controller.text.isEmpty) return;
+                          notesService
+                              .addNote(_controller.text)
+                              .then((note) => setState(() {
+                                    noteList.add(note);
+                                  }));
+                          _controller.text = "";
+                        },
+                        child: Text('note')),
+                    Journal(noteList)
+                  ])));
         });
   }
 }
@@ -72,7 +74,15 @@ class Journal extends StatelessWidget {
         child: Text("No notes"),
       );
     }
-    var widgets = noteList.map((x) => Text(x.body)).toList().reversed.toList();
-    return Center(child: Column(children: widgets));
+    var widgets = noteList
+        .map((x) => Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: Container(
+                decoration: BoxDecoration(border: Border(bottom: BorderSide())),
+                child: Text(x.body))))
+        .toList()
+        .reversed
+        .toList();
+    return Expanded(child: ListView(children: widgets));
   }
 }

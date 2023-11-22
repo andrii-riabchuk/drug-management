@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // debugShowCheckedModeBanner: false,
       title: 'DrugManagement',
-      // theme: ThemeData(
-      //   useMaterial3: true,
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-      // ),
+      theme: ThemeData(
+        useMaterial3: false,
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+      ),
       initialRoute: Routes.Home,
       // home: MyHomePage()
       routes: {
@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
             create: (context) => MyAppState(), child: Home()),
         Routes.Party: (context) => const PartyPage(),
         Routes.Secret: (context) => const SecretPage(),
-        Routes.History: (context) => HistoryPage(),
+        Routes.History: (context) => ChangeNotifierProvider(
+            create: (context) => HistoryRowsState(), child: HistoryPage()),
         Routes.Record: (context) => RecordPage()
       },
     );

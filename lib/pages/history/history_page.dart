@@ -15,20 +15,16 @@ class HistoryPage extends StatefulWidget {
 class HistoryRowsState extends ChangeNotifier {
   HistoryRowsState();
 
-  int updatedNtimes = 0;
   String searchStr = "";
 
   void setSearchStr(String str) {
     searchStr = str;
-    updatedNtimes++;
     notifyListeners();
   }
 }
 
 class _HistoryPageState extends State<HistoryPage> {
   bool isSearch = false;
-  String searchStr = "";
-  final searchStrController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +34,15 @@ class _HistoryPageState extends State<HistoryPage> {
       rowsState.setSearchStr(filterStr);
     }
 
-    // searchStrController.addListener(() {
-    //   setState(() => searchStr = searchStrController.text);
-    // });
+    setSearch(bool v) {
+      if (!v) filterRows("");
+      setState(() => isSearch = v);
+    }
 
     var appBar = AppBar();
     if (!isSearch) {
       appBar = AppBar(title: const Text("History"), actions: [
-        IconButton(
-            onPressed: () => {setState(() => isSearch = true)},
-            icon: Icon(Icons.search))
+        IconButton(onPressed: () => setSearch(true), icon: Icon(Icons.search))
       ]);
     } else {
       appBar = AppBar(
@@ -60,17 +55,16 @@ class _HistoryPageState extends State<HistoryPage> {
                   suffix: Transform.translate(
                       offset: const Offset(0.0, 5.0),
                       child: IconButton(
-                          onPressed: () => {setState(() => isSearch = false)},
+                          onPressed: () => setSearch(false),
                           icon: Icon(Icons.clear))))));
     }
 
-    return Scaffold(appBar: appBar, body: HistoryRows(searchStr));
+    return Scaffold(appBar: appBar, body: HistoryRows());
   }
 }
 
 class HistoryRows extends StatefulWidget {
-  const HistoryRows(this.searchStr, {super.key});
-  final String searchStr;
+  const HistoryRows({super.key});
 
   @override
   State<HistoryRows> createState() => _HistoryRowsState();
@@ -96,14 +90,10 @@ class _HistoryRowsState extends State<HistoryRows> {
             var historyRows = snapshot.data!;
             var rowsState = context.watch<HistoryRowsState>();
             var filterStr = rowsState.searchStr.toLowerCase();
-            historyRows = historyRows
+            historyRows
                 .where((element) =>
                     element.toString().toLowerCase().contains(filterStr))
-                .toList();
-
-            historyRows.forEach((r) => toShow.add(HistoryRow(r)));
-            // toShow.add(Text('rowsState updated - ${rowsState.updatedNtimes}'));
-            // toShow.add(Text('filter string - ${rowsState.searchStr}'));
+                .forEach((r) => toShow.add(HistoryRow(r)));
           }
 
           if (toShow.isEmpty) {

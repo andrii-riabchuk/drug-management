@@ -1,5 +1,7 @@
+import 'package:drug_management/constants/constants.dart';
 import 'package:drug_management/database/models/note/note.dart';
 import 'package:drug_management/services/notes_service.dart';
+import 'package:drug_management/utils/navigator_extension.dart';
 import 'package:flutter/material.dart';
 
 class SecretPage extends StatefulWidget {
@@ -39,7 +41,15 @@ class _SecretPageState extends State<SecretPage> {
         future: _data,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           return Scaffold(
-              appBar: AppBar(title: Text("Notes")),
+              appBar: AppBar(
+                title: Text("Notes"),
+                actions: [
+                  IconButton(
+                    icon: Icon(Icons.settings),
+                    onPressed: () => {context.open(Routes.Settings)},
+                  )
+                ],
+              ),
               body: Padding(
                   padding: EdgeInsets.all(10),
                   child: Column(children: [

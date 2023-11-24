@@ -21,7 +21,17 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void initState() {
+    print('initState home called');
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    ApplicationData.homePageReload = () => setState(() {
+          print('ApplicationDatareload called');
+        });
+
     return FutureBuilder(
         future: loadData(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
@@ -121,8 +131,9 @@ class SoberBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WithInfoButton(
-        dialogSettings: const InfoDialogSettings(
-            title: "Why shouldn't give up", message: Messages.WhyStay),
+        dialogSettings: InfoDialogSettings(
+            title: "Why shouldn't give up",
+            message: ApplicationData.whyStaySoberMessage),
         child: BeautifulCircleBox(
             color: Color(0xFFe0f2f1),
             child: Counter(daysSober ?? 999999, "Sober")));
@@ -140,8 +151,8 @@ class UntilPartyBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WithInfoButton(
-        dialogSettings: const InfoDialogSettings(
-            title: "Why wait", message: Messages.WhyWait),
+        dialogSettings: InfoDialogSettings(
+            title: "Why wait", message: ApplicationData.whyWaitMessage),
         child: BeautifulCircleBox(
             color: Color.fromARGB(255, 255, 223, 245),
             child: Counter(daysUntilParty, "Until Party")));

@@ -6,6 +6,7 @@ import 'package:drug_management/pages/intro/intro_page.dart';
 import 'package:drug_management/pages/party/i_want_it.dart';
 import 'package:drug_management/pages/party/party.dart';
 import 'package:drug_management/pages/secret/secret_page.dart';
+import 'package:drug_management/pages/secret/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,7 +38,8 @@ class MyApp extends StatelessWidget {
         Routes.Secret: (context) => const SecretPage(),
         Routes.History: (context) => ChangeNotifierProvider(
             create: (context) => HistoryRowsState(), child: HistoryPage()),
-        Routes.Record: (context) => RecordPage()
+        Routes.Record: (context) => RecordPage(),
+        Routes.Settings: (context) => Settings()
       },
     );
   }

@@ -1,3 +1,4 @@
+import 'package:drug_management/database/application_data.dart';
 import 'package:flutter/material.dart';
 
 extension NavigatorExtension on BuildContext {
@@ -11,7 +12,9 @@ extension NavigatorExtension on BuildContext {
       Navigator.of(this)
           .pushNamedAndRemoveUntil(route, (_) => false, arguments: argument);
     } else {
-      Navigator.pushNamed(this, route, arguments: argument);
+      Navigator.pushNamed(this, route, arguments: argument).then((x) {
+        if (x == 'reload') ApplicationData.homePageReload();
+      });
     }
   }
 

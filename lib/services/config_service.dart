@@ -12,6 +12,19 @@ class ConfigService {
     return null;
   }
 
+  Future<Map<String, Config>> getConfigsByKey(List<String> keys) async {
+    var configs = await getConfigs();
+    final map = <String, Config>{};
+
+    for (var config in configs) {
+      if (keys.contains(config.key)) {
+        map[config.key] = config;
+      }
+    }
+
+    return map;
+  }
+
   Future<List<Config>> getConfigs() async {
     final db = await DB.open();
     return db.getConfigs();

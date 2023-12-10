@@ -1,4 +1,3 @@
-
 import 'package:drug_management/custom_widgets/text_input.dart';
 import 'package:drug_management/custom_widgets/unit_dropdown.dart';
 import 'package:drug_management/constants/constants.dart';
@@ -64,7 +63,7 @@ class _PartyPageState extends State<PartyPage> {
           id: originalRecord!.id);
       HistoryService().updateRecord(record);
     } else {
-      var record = Record.literally(DateTime.now().toUtc(), substanceCtrl.text,
+      var record = Record.literally(selectedDate, substanceCtrl.text,
           amount: amountFormatted, description: tripDescriptionCtrl.text);
       HistoryService().insertRecord(record);
     }
@@ -90,6 +89,21 @@ class _PartyPageState extends State<PartyPage> {
     }
   }
 
+  DateTime selectedDate = DateTime.now();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime.now());
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -111,7 +125,24 @@ class _PartyPageState extends State<PartyPage> {
                     children: [
                       Questionnaire(substanceCtrl, amountCtrl, amountUnitCtrl,
                           tripDescriptionCtrl, unit, updateUnitState),
-                      UseButton(() => {recordUsage(context)})
+                      UseButton(() => {recordUsage(context)}),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Date: "),
+                            OutlinedButton(
+                                onPressed: () => {_selectDate(context)},
+                                style: ButtonStyle(
+                                  shape: MaterialStateProperty.all(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0))),
+                                ),
+                                child: Text(selectedDate
+                                    .toLocal()
+                                    .toString()
+                                    .split(' ')[0]))
+                          ])
                     ]))));
   }
 }
